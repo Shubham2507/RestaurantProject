@@ -15,7 +15,22 @@
   <dependencies>
 		<dependency>
 			<groupId>com.infogain.api</groupId>
-			<artifactId>boot-restaurant-api.entity</artifactId>
+			<artifactId>boot-restaurant-api-entity</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.infogain.api</groupId>
+			<artifactId>boot-restaurant-api-service</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.infogain.api</groupId>
+			<artifactId>boot-restaurant-api-response</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.infogain.api</groupId>
+			<artifactId>boot-restaurant-api-config</artifactId>
 			<version>0.0.1</version>
 		</dependency>
 	</dependencies>

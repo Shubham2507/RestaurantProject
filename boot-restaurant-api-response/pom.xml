@@ -5,19 +5,8 @@
     <artifactId>boot-restaurant-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>boot-restaurant-api-repo</artifactId>
+  <artifactId>boot-restaurant-api-response</artifactId>
   <version>0.0.1</version>
   <name>boot-restaurant-api</name>
   <description>boot-restaurant-api</description>
-  
-  <dependencies>
-		<dependency>
-			<groupId>com.infogain.api</groupId>
-			<artifactId>boot-restaurant-api-entity</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-	</dependencies>
-  
-  
-  
 </project>
