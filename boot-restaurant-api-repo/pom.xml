@@ -7,6 +7,4 @@
   </parent>
   <artifactId>boot-restaurant-api-repo</artifactId>
   <version>0.0.1</version>
-  <name>boot-restaurant-api-repo</name>
-  <description>boot-restaurant-api-repo</description>
 </project>
