@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.infogain.api.entity.Cart;
 import com.infogain.api.response.ResponseData;
 import com.infogain.api.service.ICartService;
-//import com.infogain.api.config.CORSFilter;
-
-
-
-
 
 @RestController("cartController")
 @RequestMapping("/poc/cart")
@@ -30,8 +25,8 @@ public class CartController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseData getEmps() {
 
-		List<Cart> emps = cartService.getAllCart();
-		return new ResponseData("200", msg, emps);
+		List<Cart> cart = cartService.getAllCart();
+		return new ResponseData("200", msg, cart);
 	}
 
 	/*@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -43,32 +38,33 @@ public class CartController {
 	}*/
 	@CrossOrigin
 	@RequestMapping(value="/add",method = RequestMethod.POST)
-public ResponseData addNew(@RequestBody Cart newDto) {
+public ResponseData addNew(@RequestBody Cart cart) {
 		
-		newDto = cartService.addNewCart(newDto);
-		return new ResponseData("200", msg, newDto);
+		String carts = cartService.addItemToCart(cart);
+		return new ResponseData("200", msg, carts);
 		
 	}
 	
 
 	@CrossOrigin
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
-public String deleteEmp(@PathVariable("id") int eId) {
+public String deleteEmp(@PathVariable("id") int cartId) {
 		
-		cartService.deleteOneCart(eId);
-		return "Deletion Successful of eId= "+eId;		
+		cartService.deleteOneCart(cartId);
+		return "Deletion Successful of eId= "+cartId;		
 	}
 	@CrossOrigin
 	@RequestMapping(method=RequestMethod.DELETE)
 public String deleteAll() {
 		
+		cartService.deleteAllCart();
 		return "Deleted All Item From Cart";
 		
 	}
-	@RequestMapping(value = "/{id}", method=RequestMethod.PUT)
-	public ResponseData updateCart(@PathVariable("id") int cartId, @RequestBody Cart cart) {
+	@RequestMapping( method=RequestMethod.PUT)
+	public ResponseData updateCart( @RequestBody Cart cart) {
 			
-			Cart newCart=cartService.updateCart(cartId, cart);
+			String newCart=cartService.updateCart( cart);
 			
 			return new ResponseData("200", msg, newCart);
 		}

@@ -23,43 +23,42 @@ import com.infogain.api.service.IMenuService;
 @RestController("menuController")
 @RequestMapping("/poc/restaurant")
 public class MenuController {
-	@Autowired IMenuService menuService;
+	@Autowired 
+	IMenuService menuService;
 	@Autowired
 	MenuRepository menuRepository;
-	
-//get All Menu
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseData getDept() {
-		
-		/*List<MenuDto> dept = menuService.getAllMenu();*/
-		
-		List<Menu> dept = menuRepository.findAll();
-		return new ResponseData("200", "List of Menu", dept);
-		
-	}
-//get Menu by item id	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseData findOne(@PathVariable(value = "id") int mId) {
 
-		MenuDto ddto = menuService.findOneMenu(mId);
-		return new ResponseData("200", "Following Menu Found", ddto);
-		 
+	//get All Menu
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseData getMenu() {
+
+		List<Menu> menu = menuRepository.findAll();
+		return new ResponseData("200", "List of Menu", menu);
+
 	}
-//add Menu	
+	//get Menu by item id	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseData findOne(@PathVariable(value = "id") int menuId) {
+
+		MenuDto menudto = menuService.findOneMenu(menuId);
+		return new ResponseData("200", "Following Menu Found", menudto);
+
+	}
+	//add Menu	
 	@RequestMapping(method = RequestMethod.POST, consumes= {MediaType.APPLICATION_JSON_VALUE})
-public ResponseData addNew(@RequestBody MenuDto newDto) {
-		
-		newDto = menuService.addNewMenu(newDto);
-		return new ResponseData("200", "Added successfuly", newDto);
-		
+	public ResponseData addItemInMenu(@RequestBody MenuDto menuDto) {
+
+		menuDto = menuService.addItem(menuDto);
+		return new ResponseData("200", "Added successfuly", menuDto);
+
 	}
-//delete one
+	//delete one
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
-	public String deleteDept(@PathVariable("id") int dId) {
-		
-		menuService.deleteOneMenu(dId);
+	public String deleteDept(@PathVariable("id") int menuId) {
+
+		menuService.deleteOneMenu(menuId);
 		return "Deletion Successful";	
 	}
-//	
-	
+	//	
+
 }
