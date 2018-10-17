@@ -1,4 +1,4 @@
-package org.boot.restaurant.api.dto;
+package com.infogain.api.service;
 
 /**
  * Hello world!
