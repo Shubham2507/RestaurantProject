@@ -31,6 +31,8 @@
 		<module>boot-restaurant-api-repo</module>
 		<module>boot-restaurant-api-dto</module>
 		<module>boot-restaurant-api-service</module>
+		<module>boot-restaurant-api-config</module>
+		<module>boot-restaurant-api-responses</module>
 	</modules>
 	
 
