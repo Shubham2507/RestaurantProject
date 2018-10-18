@@ -6,21 +6,29 @@
     <groupId>com.infogain.api</groupId>
     <artifactId>boot-restaurant-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <groupId>com.infogain.api</groupId>
+  </parent>  
+  
   <artifactId>boot-restaurant-api-service</artifactId>
   <version>0.0.1</version>
   <name>boot-restaurant-api-service</name>
-  <url>http://maven.apache.org</url>
+  <url>http://maven.apache.org</url>  
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+    	<groupId>com.infogain.api</groupId>
+  		 <artifactId>boot-restaurant-api-repository</artifactId>
+  		<version>0.0.1</version>
     </dependency>
   </dependencies>
 </project>

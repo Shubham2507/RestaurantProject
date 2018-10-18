@@ -28,10 +28,13 @@
 		<module>boot-restaurant-api-entity</module>
 		<module>boot-restaurant-api-controller</module>
 		<module>boot-restaurant-api-runner</module>
-		<module>boot-restaurant-api-repo</module>
 		<module>boot-restaurant-api-dto</module>
 		<module>boot-restaurant-api-service</module>
+		<module>boot-restaurant-api-repository</module>
+		<module>boot-restaurant-api-configuration</module>
+		<module>boot-restaurant-api-ExceptionHandler</module>
 	</modules>
+	
 	
 
 	<dependencies>
