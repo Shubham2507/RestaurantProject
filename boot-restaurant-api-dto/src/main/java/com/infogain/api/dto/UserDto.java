@@ -14,6 +14,7 @@ public class UserDto {
     private String lastname;
 
     private String address;
+    
     public String getFirstname() {
 		return firstname;
 	}

@@ -3,7 +3,7 @@ package com.infogain.api.dto;
 public class RoleDto {
 	
 	private long id;
-	private String name="User";
+	private String name;
 	
 	public long getId() {
 		return id;

@@ -55,7 +55,7 @@ try {
 }
 catch(Exception e)
 {
-	return new ResponseData("200", "Sign-Up Not Successfull", name);
+	return new ResponseData("401", "Sign-Up Not Successfull", name);
 }
 
 		}

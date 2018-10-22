@@ -1,7 +1,5 @@
 package com.infogain.api.config;
 
-
-
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -16,8 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import static com.infogain.api.entity.security.Constants.*;
+import static com.infogain.api.entity.security.Constants.*; 
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;

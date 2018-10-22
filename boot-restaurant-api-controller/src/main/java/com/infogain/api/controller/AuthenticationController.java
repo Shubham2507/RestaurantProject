@@ -88,7 +88,7 @@ public class AuthenticationController {
 	    		System.out.println(e);
 	    		response.setCode("401");
 	          	response.setMessage("Not Authorized");
-	          	response.setResponse("");
+	          	response.setResponse(loginUser.getUsername());
 	    	}
 	    
 	        return response;
