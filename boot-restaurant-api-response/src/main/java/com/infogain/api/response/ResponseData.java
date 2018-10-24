@@ -1,5 +1,8 @@
 package com.infogain.api.response;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 public class ResponseData {
 	
 	private String code;
@@ -34,5 +37,5 @@ public class ResponseData {
 		this.message = message;
 		this.response = response;
 	}
-
+   
 }
