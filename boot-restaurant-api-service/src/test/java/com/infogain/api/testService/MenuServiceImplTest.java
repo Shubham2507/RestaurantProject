@@ -1,4 +1,4 @@
-package com.infogain.api.testService;
+/*package com.infogain.api.testService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -84,3 +84,4 @@ public void testfindOneMenu(int itemId)
 		assertNotNull(mDto);
 	}
 }
+*/
