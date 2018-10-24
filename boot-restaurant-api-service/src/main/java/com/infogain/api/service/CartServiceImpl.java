@@ -1,14 +1,14 @@
 package com.infogain.api.service;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infogain.api.entity.Cart;
-import com.infogain.api.entity.Menu;
+
 import com.infogain.api.repo.CartRepository;
 import com.infogain.api.*;
 
@@ -131,6 +131,7 @@ public class CartServiceImpl implements ICartService {
 	}
 */
 	@Override
+	@Transactional
 	public String updateCart(Cart cart) {
 		Cart newItem = cartRepo.getOne(cart.getCartId());
 		String temp ="";
@@ -150,8 +151,6 @@ public class CartServiceImpl implements ICartService {
 		//return cartRepo.save(newCart);
 
 	}
-
-
 	
 
 }

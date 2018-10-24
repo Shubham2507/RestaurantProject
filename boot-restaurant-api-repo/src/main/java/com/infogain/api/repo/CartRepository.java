@@ -1,5 +1,7 @@
 package com.infogain.api.repo;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,5 +13,7 @@ import com.infogain.api.entity.Cart;
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
 	Cart findByItemIdAndUsername(int itemId, String username);
+	 List<Cart> getAllByUsername(String username);
+	 String deleteByUsername(String username);
 
 }
