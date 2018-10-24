@@ -1,8 +1,12 @@
+
+
 package com.infogain.api.service;
 
 import java.util.ArrayList;
 
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.boot.restaurant.api.dto.MenuDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +91,7 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
+	@Transactional
 	public MenuDto updateMenuURL(int itemId, MenuDto menuDto) {
 		Menu menu = menuRepo.getOne(itemId);
 		menu.setRate(menuDto.getRate());
