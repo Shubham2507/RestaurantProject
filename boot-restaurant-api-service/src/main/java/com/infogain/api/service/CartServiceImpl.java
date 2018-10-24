@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.infogain.api.entity.Cart;
 import com.infogain.api.entity.Menu;
 import com.infogain.api.repo.CartRepository;
-
+import com.infogain.api.*;
 
 @Service("cartService")
 public class CartServiceImpl implements ICartService {
@@ -68,7 +68,14 @@ public class CartServiceImpl implements ICartService {
 	 * mDto.setRate(mSet.getRate()); sDto.add(mDto); }); return sDto; }
 	 */
 	@Override
-	public Cart addNewCart(Cart newCart) {
+	public String addItemToCart(Cart newCart) {
+		String output="";
+		Cart newCarts = cartRepo.findByItemIdAndUsername(newCart.getItemId(),newCart.getUsername()); 
+		if (newCarts!=null)
+		{
+			output="ITEM ALREADY EXISTS IN CART !!!!";
+		}
+		else {
 		Cart cart = new Cart();
 		cart.setUsername(newCart.getUsername());
 		cart.setItemId(newCart.getItemId());
@@ -80,7 +87,10 @@ public class CartServiceImpl implements ICartService {
 		cart.setTotalPrice(newCart.getQuantity() * newCart.getRate());
 
 		cartRepo.save(cart);
-		return newCart;
+		output="ITEM ADDED TO CART";
+		}
+		
+		return output;
 	}
 
 	// DTO TO ENTITY
@@ -100,17 +110,48 @@ public class CartServiceImpl implements ICartService {
 
 	}
 
-	
+	/*@Override
+	public String updateCart(int cartId, int quantity) {
+		Cart cartItem = cartRepo.getOne(cartId);
+		String temp ="";
+		if (quantity == 0) {
+			deleteOneCart(cartId);
+			temp="THIS ITEM DELETED FROM CART!";
+			
 
-	@Override
-	public Cart updateCart(int cartId,Cart cart) {
-		Cart newCart = cartRepo.getOne(cartId);
-		newCart.setQuantity(cart.getQuantity());
-		newCart.setTotalPrice(cart.getQuantity()*cart.getRate());
-		return cartRepo.save(newCart);
-		 
-
+		} else {
 		
+		cartItem.setQuantity(quantity);
+		cartItem.setTotalPrice(cartItem.getRate()*quantity);
+		cartRepo.save(cartItem);
+		temp="Updated Successfully!";
+
 	}
+	return temp;
+	}
+*/
+	@Override
+	public String updateCart(Cart cart) {
+		Cart newItem = cartRepo.getOne(cart.getCartId());
+		String temp ="";
+		if (cart.getQuantity() == 0) {
+			deleteOneCart(cart.getCartId());
+			temp="THIS ITEM  IS DELETED FROM CART!";
+			
+
+		} else {
+			newItem.setQuantity(cart.getQuantity());
+			newItem.setTotalPrice(cart.getQuantity() * cart.getRate());
+			cartRepo.save(newItem);
+			temp="Updated Successfully!";
+
+		}
+		return temp;
+		//return cartRepo.save(newCart);
+
+	}
+
+
+	
 
 }

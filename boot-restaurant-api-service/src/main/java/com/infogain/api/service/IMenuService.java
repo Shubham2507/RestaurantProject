@@ -13,7 +13,7 @@ public interface IMenuService {
 
 	MenuDto findOneMenu(int itemId);
 
-	MenuDto addNewMenu(MenuDto newDto);
+	MenuDto addItem(MenuDto menuDto);
 
 	MenuDto updateMenu(MenuDto menuDto);
 

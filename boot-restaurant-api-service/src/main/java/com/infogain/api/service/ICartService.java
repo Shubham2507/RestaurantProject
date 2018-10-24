@@ -15,12 +15,12 @@ public interface ICartService {
 
 	//CartDto findOneCart(int cartId);
 
-	Cart addNewCart(Cart cartObj);
+	String addItemToCart(Cart cartObj);
 
-	Cart updateCart(int cartId,Cart cart);
+	String updateCart(Cart cart);
 
 	void deleteAllCart();
-
+	
 	//CartDto updateCartURL(int eId, CartDto empDto);
 
 }

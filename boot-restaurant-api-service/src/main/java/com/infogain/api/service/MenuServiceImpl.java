@@ -61,17 +61,17 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public MenuDto addNewMenu(MenuDto newDto) {
+	public MenuDto addItem(MenuDto menuDto) {
 		Menu menu = new Menu();
 
-		menu.setItem_Name(newDto.getItemName());
-		menu.setDescription(newDto.getDescription());
-		menu.setCategory(newDto.getCategory());
-		menu.setQuantity(newDto.getQuantity());
-		menu.setRate(newDto.getRate());
+		menu.setItem_Name(menuDto.getItemName());
+		menu.setDescription(menuDto.getDescription());
+		menu.setCategory(menuDto.getCategory());
+		menu.setQuantity(menuDto.getQuantity());
+		menu.setRate(menuDto.getRate());
 
 		menuRepo.save(menu);
-		return newDto;
+		return menuDto;
 	}
 
 	@Override
