@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class CouponAlreadyExists extends RuntimeException {
+public class CouponAlreadyExistsException extends RuntimeException {
 	
-	public CouponAlreadyExists(String exception)
+	public CouponAlreadyExistsException(String exception)
 	{
 	super(exception+" already present.");
 	}

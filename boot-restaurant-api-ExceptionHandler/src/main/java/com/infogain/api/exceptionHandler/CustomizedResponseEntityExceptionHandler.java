@@ -14,9 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler
 {
-
-  
-
   @ExceptionHandler(CouponNotFoundException.class)
   public final ResponseEntity<ExceptionResponse> handleCouponNotFoundException(CouponNotFoundException ex, WebRequest request)
   {
@@ -25,21 +22,46 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
   
-  @ExceptionHandler(CouponListEmpty.class)
-  public final ResponseEntity<ExceptionResponse> handleCouponListEmptyException(CouponListEmpty ex, WebRequest request)
+  @ExceptionHandler(BillDetailsNotFoundException.class)
+  public final ResponseEntity<ExceptionResponse> handleBillDetailsNotFoundException(BillDetailsNotFoundException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
         request.getDescription(false));
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
   
-  @ExceptionHandler(CouponAlreadyExists.class)
-  public final ResponseEntity<ExceptionResponse> handleCouponAlreadyExistsException(CouponAlreadyExists ex, WebRequest request)
+  @ExceptionHandler(CouponListEmptyException.class)
+  public final ResponseEntity<ExceptionResponse> handleCouponListEmptyException(CouponListEmptyException ex, WebRequest request)
+  {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+        request.getDescription(false));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+  }
+  
+  @ExceptionHandler(BillDetailsListEmptyException.class)
+  public final ResponseEntity<ExceptionResponse> handleBillDetailsListEmptyException(BillDetailsListEmptyException ex, WebRequest request)
+  {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+        request.getDescription(false));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+  }
+  
+  @ExceptionHandler(CouponAlreadyExistsException.class)
+  public final ResponseEntity<ExceptionResponse> handleCouponAlreadyExistsException(CouponAlreadyExistsException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
         request.getDescription(false));
     return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
   }
+  
+  @ExceptionHandler(BillDetailsAlreadyExistsException.class)
+  public final ResponseEntity<ExceptionResponse> handleBillDetailsAlreadyExistsException(BillDetailsAlreadyExistsException ex, WebRequest request)
+  {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+        request.getDescription(false));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+  }
+  
   
   @ExceptionHandler(Exception.class)
   public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) 

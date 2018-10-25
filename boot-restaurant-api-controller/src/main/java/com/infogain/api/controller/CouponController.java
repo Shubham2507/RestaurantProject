@@ -2,6 +2,7 @@ package com.infogain.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.infogain.api.entity.Coupon;
-import com.infogain.api.exceptionHandler.CouponAlreadyExists;
-import com.infogain.api.exceptionHandler.CouponListEmpty;
+import com.infogain.api.exceptionHandler.CouponAlreadyExistsException;
+import com.infogain.api.exceptionHandler.CouponListEmptyException;
 import com.infogain.api.exceptionHandler.CouponNotFoundException;
 import com.infogain.api.service.CouponService;
 
@@ -43,17 +44,17 @@ public class CouponController
 		List<Coupon> couponList = couponService.getAllCoupon();
 		
 		if (couponList.isEmpty())
-			throw new CouponListEmpty("Coupon-List : ");
+			throw new CouponListEmptyException("Coupon-List : ");
 		
 		return new ResponseEntity<List<Coupon>>(couponList, HttpStatus.OK);
 	}
 	@PostMapping()
-	public ResponseEntity<Coupon> addCoupon(@RequestBody Coupon coupon)
+	public ResponseEntity<Coupon> addCoupon(@Valid @RequestBody Coupon coupon)
 	{            	
 		Coupon couponObject= couponService.getCouponByCode(coupon.getCode());
 
 		if (couponObject!=null)
-			throw new CouponAlreadyExists("Coupon : "+coupon.getCode());
+			throw new CouponAlreadyExistsException("Coupon : "+coupon.getCode());
         couponService.addCoupon(coupon);
         return new ResponseEntity<Coupon>(coupon,HttpStatus.OK);    
 	}
