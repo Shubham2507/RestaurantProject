@@ -2,6 +2,7 @@ package com.infogain.api.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,7 +30,7 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public ResponseData saveUser(@RequestBody UserDto user) {
+	public ResponseData saveUser(@RequestBody UserDto user,HttpServletResponse httpResponse) {
 		String name= user.getUsername();;
 UserServiceImpl impl= new UserServiceImpl();
 try {
@@ -51,10 +52,12 @@ try {
 			}*/
 			String address=user.getAddress();
 			/*return userService.save(user);*/
+			httpResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
 			return new ResponseData("200", "Sign-Up Successfull", userService.save(user));
 }
 catch(Exception e)
 {
+	 httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 	return new ResponseData("401", "Sign-Up Not Successfull", name);
 }
 

@@ -87,8 +87,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	    newUser.setAddress(user.getAddress());
 	   newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
 	    //newUser.setRoles("USER");
-	    newUser.setRole("USER");
-	   //newUser.setRoles(convertToEnt(user.getRole()));
+	    //newUser.setRole("USER");
+	   newUser.setRoles(convertToEnt(user.getRole()));
 	   
         return userDao.save(newUser);
     }

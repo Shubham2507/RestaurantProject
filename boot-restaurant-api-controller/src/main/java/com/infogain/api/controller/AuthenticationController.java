@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,35 +45,16 @@ public class AuthenticationController {
 	@Autowired
 	private RedisService redis;
   
-/*public ResponseData getDept() {
-		
-		List<DepartmentsDto> dept = deptService.getAllDept();
-		return new ResponseData("200", "List of Departments", dept);
-		
-	}*/
+
 	
 	 @RequestMapping(value = "/login", method = RequestMethod.POST)
-	    public ResponseData register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+	 //@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	    public ResponseData register(@RequestBody LoginUser loginUser,HttpServletResponse HttpResponse) throws AuthenticationException {
 	    	ResponseData response=new ResponseData();
 	    	try
 	    	{
 	    	 final Authentication authentication = authenticationManager.authenticate( new UsernamePasswordAuthenticationToken( loginUser.getUsername(),loginUser.getPassword()));
-	    	/* UsernamePasswordAuthenticationToken authentication=(new UsernamePasswordAuthenticationToken( loginUser.getUsername(),loginUser.getPassword()));
-	         User user1=user.findByUsername(loginUser.getUsername());
-	    	 if (!user1.getPassword().equals(authentication.getCredentials())) {
-	    		 
-	    		 response.setCode("401");
-	          	response.setMessage("Not Authorized");
-	          	response.setResponse("");
-	    		 throw new BadCredentialsException("Username / Password was not found");
-	    		
-	    	 }
-	    	
-	    	
-	       
-	     
-	        
-	        else {*/
+	  
 	        	 SecurityContextHolder.getContext().setAuthentication(authentication);
 	             final String token = jwtTokenUtil.generateToken(authentication);
 	        redisTemplate.opsForValue().set(loginUser.getUsername(),token);
@@ -82,13 +65,21 @@ public class AuthenticationController {
 	        response.setCode("200");
 	    	response.setMessage("Login Successfull");
 	    	response.setResponse(token);
+	 HttpResponse.setStatus(HttpServletResponse.SC_OK);
+	 
+			//return  response<>(HttpStatus.OK);
+	    	
 	    	}
+	   
 	    	catch(Exception e)
 	    	{
+	    		
 	    		System.out.println(e);
 	    		response.setCode("401");
 	          	response.setMessage("Not Authorized");
 	          	response.setResponse(loginUser.getUsername());
+	          	HttpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	          	//response.setHttpResponse(HttpStatus.CONFLICT);
 	    	}
 	    
 	        return response;
