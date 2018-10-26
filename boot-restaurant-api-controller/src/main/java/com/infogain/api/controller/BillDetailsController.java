@@ -1,5 +1,11 @@
 package com.infogain.api.controller;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -57,82 +63,96 @@ public class BillDetailsController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<?> addBillDetails(
-			@RequestParam(value="orderid") int orderid,
-			@RequestParam(value="amount") float totalAmount,
-			@RequestParam(name="coupon",required = false) String couponApplied) {
-		
-		float maxOffer=0;
-		float minOffer=0;
-		float off=0;
-		float discount=0;
-		
+	public ResponseEntity<?> addBillDetails(@RequestParam(value = "orderid") int orderid,
+			@RequestParam(value = "amount") float totalAmount,
+			@RequestParam(name = "coupon", required = false) String couponApplied) {
+
+		float maxOffer = 0;
+		float minOffer = 0;
+		float off = 0;
+		float discount = 0;
+
 		BillDetails billDetailsObject = billDetailsService.getBillDetailsByorderId(orderid);
 
 		if (billDetailsObject != null)
 			throw new BillDetailsAlreadyExistsException("Bill for Order Id : " + orderid);
-		if( orderid > 0 && totalAmount > 0)
-		{
-			if (couponApplied != null) 
-			{ 
+		if (orderid > 0 && totalAmount > 0) {
+			if (couponApplied != null) {
 				Coupon couponObject = couponService.getCouponByCode(couponApplied);
-				if (couponObject != null) 
-				{
-					/*System.out.println(couponObject.getCode());
-					System.out.println(couponObject.getDiscountPercentage());
-					System.out.println(couponObject.getMaximumDiscount());
-					System.out.println(couponObject.getQuantity());
-					System.out.println(couponObject.getTermsAndConditions());*/
+				/*
+				 * LocalDate date = LocalDate.now();
+				 * 
+				 * Instant instant = Instant.ofEpochMilli(expiryDate.getTime()); LocalDateTime
+				 * localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+				 * LocalDate localDate = localDateTime.toLocalDate();
+				 * 
+				 * 
+				 * System.out.println("Today's date: "+date);
+				 * System.out.println("Coupon expiry date: "+expiryDate);
+				 * 
+				 * int dateDiff=localDate.compareTo(date);
+				 * System.out.println("difference of dates: "+dateDiff);
+				 */
+
+				if (couponObject != null) {
 					
+					Date expiryDate = couponObject.getExpiryDate();
+					Calendar rightNow = Calendar.getInstance();
+					rightNow.clear(Calendar.HOUR);
+					rightNow.clear(Calendar.MINUTE);
+					rightNow.clear(Calendar.SECOND);
+					rightNow.clear(Calendar.MILLISECOND);
+					Date today = rightNow.getTime();
 					
-					BillDetails billDetails = new BillDetails(orderid,totalAmount,couponApplied);
-					int quantity = couponObject.getQuantity(); 
-					quantity -= 1; 
-					couponObject.setQuantity(quantity);		
-				
-					minOffer=(billDetails.getTotalAmount())*(couponObject.getDiscountPercentage()/100);
-	//				System.out.println("Discount value: "+minOffer);
-					maxOffer=couponObject.getMaximumDiscount();
-			//		System.out.println("Maximum Offer: "+maxOffer);
-					if(minOffer<=maxOffer)
+					if (expiryDate.compareTo(today) >= 0)
 					{
-						off=billDetails.getTotalAmount()-minOffer;
-						billDetails.setNetAmount(off);
-						//System.out.println("Net amount after discount is: "+off);
+
+						BillDetails billDetails = new BillDetails(orderid, totalAmount, couponApplied);
+						int quantity = couponObject.getQuantity();
+						quantity -= 1;
+						couponObject.setQuantity(quantity);
+
+						minOffer = (billDetails.getTotalAmount()) * (couponObject.getDiscountPercentage() / 100);
+						// System.out.println("Discount value: "+minOffer);
+						maxOffer = couponObject.getMaximumDiscount();
+						// System.out.println("Maximum Offer: "+maxOffer);
+						if (minOffer <= maxOffer) {
+							off = billDetails.getTotalAmount() - minOffer;
+							billDetails.setNetAmount(off);
+							// System.out.println("Net amount after discount is: "+off);
+						} else {
+							off = billDetails.getTotalAmount() - maxOffer;
+							billDetails.setNetAmount(off);
+							// System.out.println("Net amount after discount is: "+off);
+						}
+						couponService.updateCoupon(couponObject);
+						billDetailsService.addBillDetails(billDetails);
+						return new ResponseEntity<BillDetails>(billDetails, HttpStatus.OK);
 					}
+					
 					else
 					{
-						off=billDetails.getTotalAmount()-maxOffer;
-						billDetails.setNetAmount(off);
-						//System.out.println("Net amount after discount is: "+off);
+						return new ResponseEntity<String>("The Coupon has expired",
+								HttpStatus.BAD_REQUEST); 
 					}
-					couponService.updateCoupon(couponObject);
-					billDetailsService.addBillDetails(billDetails);
-					return new ResponseEntity<BillDetails>(billDetails, HttpStatus.OK);
-	
-				} 
-				else 
-				{
+
+				} else {
 					throw new CouponNotFoundException("Coupon with code: " + couponApplied);
-					
+
 				}
-	
-			}
-			else
-			{
-				BillDetails billDetails = new BillDetails(orderid,totalAmount);
+
+			} else {
+				BillDetails billDetails = new BillDetails(orderid, totalAmount);
 				billDetails.setNetAmount(billDetails.getTotalAmount());
 				billDetailsService.addBillDetails(billDetails);
 				return new ResponseEntity<BillDetails>(billDetails, HttpStatus.OK);
 
-				
 			}
+		} else {
+			return new ResponseEntity<String>("Please enter positive/greater than zero Order Id and Bill Amount",
+					HttpStatus.BAD_REQUEST);
 		}
-		else
-		{
-			return new ResponseEntity<String>("Please enter positive/greater than zero Order Id and Bill Amount", HttpStatus.BAD_REQUEST);
-		}
-	
+
 	}
 
 	@PutMapping()
@@ -142,9 +162,9 @@ public class BillDetailsController {
 
 		if (billDetailsValidIdObject == null)
 			throw new BillDetailsNotFoundException("Bill with Id: " + billDetails.getBillId());
-		
-		if(billDetailsValidOrderObject==null)
-			throw new BillDetailsNotFoundException("Order Id: "+billDetails.getOrderId());
+
+		if (billDetailsValidOrderObject == null)
+			throw new BillDetailsNotFoundException("Order Id: " + billDetails.getOrderId());
 
 		billDetailsService.updateBillDetails(billDetails);
 		return new ResponseEntity<BillDetails>(billDetails, HttpStatus.OK);
