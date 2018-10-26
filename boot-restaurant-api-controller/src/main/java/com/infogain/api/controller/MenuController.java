@@ -29,6 +29,7 @@ public class MenuController {
 	MenuRepository menuRepository;
 
 	//get All Menu
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseData getMenu() {
 
@@ -37,6 +38,7 @@ public class MenuController {
 
 	}
 	//get Menu by item id	
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseData findOne(@PathVariable(value = "id") int menuId) {
 
@@ -44,8 +46,9 @@ public class MenuController {
 		return new ResponseData("200", "Following Menu Found", menudto);
 
 	}
-	//add Menu	
-	@PreAuthorize("hasRole('USER')")
+	//add Menu
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	
 	@RequestMapping(method = RequestMethod.POST, consumes= {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseData addItemInMenu(@RequestBody MenuDto menuDto) {
 
@@ -54,6 +57,7 @@ public class MenuController {
 
 	}
 	//delete one
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
 	public String deleteDept(@PathVariable("id") int menuId) {
 
