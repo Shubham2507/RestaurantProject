@@ -68,7 +68,7 @@ public class MenuServiceImpl implements IMenuService {
 	public MenuDto addItem(MenuDto menuDto) {
 		Menu menu = new Menu();
 
-		menu.setItem_Name(menuDto.getItemName());
+		menu.setItemName(menuDto.getItemName());
 		menu.setDescription(menuDto.getDescription());
 		menu.setCategory(menuDto.getCategory());
 		menu.setQuantity(menuDto.getQuantity());
