@@ -1,10 +1,14 @@
 package com.infogain.api.testService;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.boot.restaurant.api.dto.MenuDto;
 import org.junit.Test;
@@ -33,75 +37,108 @@ public class MenuServiceImplTest{
 
 	@Autowired
 	private MenuServiceImpl menuService;
-	
+
 	@MockBean
 	private MenuRepository menuRepo;
-	
-	
+
+
 	private MockMvc mockMvc;
+
+	Menu menu=new Menu();
+
 	@Test
 	public void testGetAllMenu() {
 		List<MenuDto> lst = new ArrayList<>();
-		lst.add(new MenuDto(3, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
+		lst.add(new MenuDto(11, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
+		lst.add(new MenuDto(12, "Roasted Peanuts", 200, "snacks", 2, "Peanuts"));
+
+		
+		
 		when(menuService.getAllMenu()).thenReturn(lst);
-		List<MenuDto> menu = menuService.getAllMenu();
+		List<Menu> menu = menuRepo.findAll();
 		assertNotNull(menu);
 	}
-	/*@Test
-public void testdeleteOneMenu(int itemId)
-{
+	@Test
+	public void testdeleteOneMenu() throws IllegalArgumentException
+	{
 		List<MenuDto> lst = new ArrayList<>();
 		lst.add(new MenuDto(3, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
 		lst.add(new MenuDto(4, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
-		
-		when(menuService.deleteOneMenu(Mockito.anyInt())).thenReturn("Deletion Successful");
-		String response = menuService.deleteOneMenu(4);
-		assertEquals("Deletion Successful", response);
-}*/
 
-	
-/*public void testfindOneMenu(int itemId)
-{
-		List<MenuDto> lst = new ArrayList<>();
-		MenuDto dto=new MenuDto(4, "Almond", 200, "snacks", 4, "Almond");
-		lst.add(new MenuDto(3, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
-		lst.add(new MenuDto(5, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
-		
-		Mockito.when(menuService.findOneMenu(Mockito.anyInt())).thenReturn(dto);
-		MenuDto mdto = menuService.findOneMenu(4);
-		assertNotNull(mdto);
-		
-}*/
-	
+		menuRepo.deleteById(Mockito.anyInt());
+		String response = menuService.deleteOneMenu(3);
+		assertEquals("Deletion Successful", response);
+
+	}
+
+
+
+
 	@Test
 	public void testadd()
 	{
 		MenuDto mdto= new MenuDto();
 		Menu menu= new Menu();
-	
-		
-		
 		mdto.setItemId(27);
 		mdto.setCategory("snacks");
 		mdto.setDescription("Maggie Masala");
 		mdto.setItemName("Maggi");
 		mdto.setQuantity(2);
 		mdto.setRate(100);
-		
-		//when(menuService.addItem(Mockito.any(MenuDto.class))).thenReturn(mdto);
 		MenuDto mDto = menuService.addItem(mdto);
 		assertNotNull(mDto);
-		
 	}
+
+	@Test
+	public void testDeleteMenuPresent() throws Exception {
+
+
+		List<MenuDto> lst = new ArrayList<>();
+		MenuDto dto=new MenuDto(4, "Almond", 200, "snacks", 4, "Almond");
+		lst.add(new MenuDto(3, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
+		String response = menuService.deleteAllMenu();
+		assertEquals("Deletion Successful", response);
+
+	}
+
+
+	@Test
+	public void testDeleteMenuNotPresent() throws Exception {
+		menu.setItem_Id(18);
+		menu.setCategory("snacks");
+		menu.setItem_Name("abcd");
+		menu.setItem_Name("Chooley");
+		menu.setDescription("hff");
+		menu.setQuantity(1);
+		menu.setRate(200);
+
+		String response = menuService.deleteAllMenu();
+		assertNotEquals("Deletion Not Successful", response);
+
+		
+
+	}
+
+
+
+
+
+
+	@Test
+	public void testfindOneMenu() throws Exception
+	{
+		List<MenuDto> lst = new ArrayList<>();
+		MenuDto dto=new MenuDto(4, "Almond", 200, "snacks", 5, "Almond");
+		lst.add(new MenuDto(3, "Honey Almond", 100, "snacks", 1, "Almond dipped in honey"));
+		//lst.add(new MenuDto(4, "Roasted Almond", 100, "snacks", 1, "Almond Roasted in honey"));
+
+
+
 	
-	 @Test
-		public void testDeleteMedicinePresent() throws Exception {
-			
-			RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/poc/restaurant/{id}")
-					
-					.accept(MediaType.APPLICATION_JSON);
-			mockMvc.perform(requestBuilder)
-			.andExpect(status().isOk());
-			
-		}
+		Optional<Menu> mdto = menuRepo.findById(3);
+		assertNotNull(mdto);
+		//assertNull(mdto);
+
+	}
+
 }

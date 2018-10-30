@@ -85,8 +85,9 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public void deleteAllMenu() {
+	public String deleteAllMenu() {
 		menuRepo.deleteAll();
+		return "Deletion Successful";
 
 	}
 
