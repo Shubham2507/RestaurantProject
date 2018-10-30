@@ -1,16 +1,10 @@
 package com.infogain.api.entity;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -111,11 +105,7 @@ public class OrderPlaced {
 		this.totalPrice = totalPrice;
 	}
 
-	
-	/*@OneToMany(cascade = CascadeType.ALL)
-	private Set<OrderedItem> orderedItem;*/
-
-	
+		
 	public String getOrderStatus() {
 		return orderStatus;
 	}

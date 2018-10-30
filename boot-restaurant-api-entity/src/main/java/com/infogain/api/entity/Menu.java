@@ -34,7 +34,7 @@ public class Menu {
 		return itemId;
 	}
 
-	public void setItem_Id(int itemId) {
+	public void setItemId(int itemId) {
 		this.itemId = itemId;
 	}
 
@@ -42,7 +42,7 @@ public class Menu {
 		return itemName;
 	}
 
-	public void setItem_Name(String itemName) {
+	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
 
