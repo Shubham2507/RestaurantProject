@@ -17,6 +17,22 @@ public class OrderPlaced {
 	private int id;
     
 	
+	public OrderPlaced(int id, int orderId, String orderStatus, String username, int itemId, String itemName, int rate,
+			String category, int quantity, String description, int totalPrice) {
+		super();
+		this.id = id;
+		this.orderId = orderId;
+		this.orderStatus = orderStatus;
+		this.username = username;
+		this.itemId = itemId;
+		this.itemName = itemName;
+		this.rate = rate;
+		this.category = category;
+		this.quantity = quantity;
+		this.description = description;
+		this.totalPrice = totalPrice;
+	}
+
 	@Column(name="Manual_OrderId")
 	private int orderId; 
 	

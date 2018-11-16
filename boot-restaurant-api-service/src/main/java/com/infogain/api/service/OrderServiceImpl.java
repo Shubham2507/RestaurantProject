@@ -40,7 +40,7 @@ public class OrderServiceImpl implements IOrderService {
 	public List<OrderPlaced> addOrder(OrderPlaced order) {
 		
 		
-		List<Cart >cartItems=cartRepo.getAllByUsername(order.getUsername());
+		List<Cart>cartItems=cartRepo.getAllByUsername(order.getUsername());
 		List<OrderPlaced> orderplaced=new ArrayList<>();
 		int orderId = (int) (System.currentTimeMillis() & 0xfffffff);
 		OrderPlaced temp=null;

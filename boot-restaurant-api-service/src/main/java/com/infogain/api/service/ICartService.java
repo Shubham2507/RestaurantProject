@@ -13,7 +13,7 @@ public interface ICartService {
 
 	String addItemToCart(Cart cartObj);
 
-	Cart updateCart(Cart cart);
+	String updateCart(Cart cart);
 
 	String deleteAllCart();
 	

@@ -6,14 +6,14 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.infogain.api.entity.Cart;
 
 import com.infogain.api.repo.CartRepository;
-import com.infogain.api.*;
-
+@EnableWebMvc
 @Service("cartService")
-public class CartServiceImpl  implements ICartService {
+public class CartServiceImpl implements ICartService {
 	@Autowired
 	private CartRepository cartRepo;
 
@@ -34,7 +34,6 @@ public class CartServiceImpl  implements ICartService {
 	@Override
 	public String addItemToCart(Cart newCart) {
 		String output="";
-		
 		Cart newCarts = cartRepo.findByItemIdAndUsername(newCart.getItemId(),newCart.getUsername()); 
 		if (newCarts!=null)
 		{
@@ -68,9 +67,8 @@ public class CartServiceImpl  implements ICartService {
 	
 	@Override
 	@Transactional
-	public Cart updateCart(Cart cart) {
-		Cart newItem ;
-		newItem= cartRepo.getOne(cart.getCartId());
+	public String updateCart(Cart cart) {
+		Cart newItem = cartRepo.getOne(cart.getCartId());
 		String temp ="";
 		if (cart.getQuantity() == 0) {
 			deleteOneCart(cart.getCartId());
@@ -84,7 +82,7 @@ public class CartServiceImpl  implements ICartService {
 			temp="Updated Successfully!";
 
 		}
-		return newItem;
+		return temp;
 
 
 	}
