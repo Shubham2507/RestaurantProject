@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.boot.restaurant.api.dto.MenuDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +30,7 @@ public class MenuController {
 	MenuRepository menuRepository;
 
 	//get All Menu
-	
+	@CrossOrigin
 	@GetMapping
 	public ResponseData getMenu() {
 
@@ -37,7 +39,7 @@ public class MenuController {
 
 	}
 	//get Menu by item id	
-	
+	@CrossOrigin
 	@GetMapping(value = "/{id}")
 	public ResponseData findOne(@PathVariable(value = "id") int menuId) {
 
@@ -46,6 +48,7 @@ public class MenuController {
 
 	}
 	//add Menu	
+	@CrossOrigin
 @PostMapping
 	public ResponseData addItemInMenu(@RequestBody MenuDto menuDto) {
 
@@ -54,12 +57,21 @@ public class MenuController {
 
 	}
 	//delete one
+	@CrossOrigin
 	@DeleteMapping(value="/{id}")
 	public String deleteDept(@PathVariable("id") int menuId) {
 
 		menuService.deleteOneMenu(menuId);
 		return "Deletion Successful";	
 	}
-	//	
+	//	update
+	@CrossOrigin
+	@PutMapping(value="/{id}")
+	public ResponseData updateMenu(@PathVariable("id") int itemId,@RequestBody MenuDto menuDto)
+	{
+		MenuDto menuDto1=menuService.updateMenuURL(itemId, menuDto);
+		return new ResponseData("200", "Added successfuly", menuDto1);
+		
+	}
 
 }

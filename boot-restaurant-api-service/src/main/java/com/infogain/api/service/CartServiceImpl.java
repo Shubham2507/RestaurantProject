@@ -6,11 +6,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.infogain.api.entity.Cart;
 
 import com.infogain.api.repo.CartRepository;
-
+@EnableWebMvc
 @Service("cartService")
 public class CartServiceImpl implements ICartService {
 	@Autowired

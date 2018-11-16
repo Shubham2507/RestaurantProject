@@ -80,7 +80,7 @@ public class MenuServiceImpl implements IMenuService {
 
 	@Override
 	public MenuDto updateMenu(MenuDto menuDto) {
-		//
+		
 		return null;
 	}
 
@@ -95,7 +95,10 @@ public class MenuServiceImpl implements IMenuService {
 	public MenuDto updateMenuURL(int itemId, MenuDto menuDto) {
 		Menu menu = menuRepo.getOne(itemId);
 		menu.setRate(menuDto.getRate());
-
+		menu.setCategory(menuDto.getCategory());
+		menu.setDescription(menuDto.getDescription());
+		menu.setItemName(menuDto.getItemName());
+		menu.setQuantity(menuDto.getQuantity());
 		return menuDto;
 	}
 

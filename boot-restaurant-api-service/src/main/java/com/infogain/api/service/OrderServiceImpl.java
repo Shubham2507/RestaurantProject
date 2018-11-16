@@ -1,18 +1,20 @@
 package com.infogain.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.infogain.api.entity.Cart;
 import com.infogain.api.entity.OrderPlaced;
 import com.infogain.api.repo.CartRepository;
 import com.infogain.api.repo.OrderRepository;
 
-
+@EnableWebMvc
 @Service("orderService")
 public class OrderServiceImpl implements IOrderService {
 	@Autowired
@@ -35,16 +37,16 @@ public class OrderServiceImpl implements IOrderService {
 
 	@Override
 	@Transactional
-	public int addOrder(OrderPlaced order) {
+	public List<OrderPlaced> addOrder(OrderPlaced order) {
 		
 		
-		List<Cart >cartItems=cartRepo.getAllByUsername(order.getUsername());
-		
+		List<Cart>cartItems=cartRepo.getAllByUsername(order.getUsername());
+		List<OrderPlaced> orderplaced=new ArrayList<>();
 		int orderId = (int) (System.currentTimeMillis() & 0xfffffff);
-		
+		OrderPlaced temp=null;
 		for(Cart cart:cartItems)
 		{
-			OrderPlaced temp=new OrderPlaced();
+			 temp=new OrderPlaced();
 			temp.setCategory(cart.getCategory());
 			temp.setDescription(cart.getDescription());
 			temp.setItemId(cart.getItemId());
@@ -55,14 +57,14 @@ public class OrderServiceImpl implements IOrderService {
 			temp.setTotalPrice(cart.getTotalPrice());
 			temp.setUsername(cart.getUsername());
 			temp.setOrderId(orderId);
-			
+			orderplaced.add(temp);
 			orderRepo.save(temp);
 			
 			cartRepo.deleteByUsername(order.getUsername());
 			
 		}
 	
-		return orderId ;
+		return orderplaced ;
 	}
 
 	@Override
@@ -70,6 +72,7 @@ public class OrderServiceImpl implements IOrderService {
 	public OrderPlaced updateOrder(OrderPlaced order) {
 		OrderPlaced newOrder= orderRepo.getOne(order.getId());
 		newOrder.setOrderStatus(order.getOrderStatus());
+		orderRepo.save(newOrder);
 		return newOrder;
 	}
 	
