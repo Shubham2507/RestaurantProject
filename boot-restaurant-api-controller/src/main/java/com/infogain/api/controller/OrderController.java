@@ -47,7 +47,7 @@ public class OrderController {
 
 	public ResponseData addOrderItem(@RequestBody OrderPlaced order) {
 
-		int newOrder=orderedService.addOrder(order);
+		List<OrderPlaced> newOrder=orderedService.addOrder(order);
 		return new ResponseData("200", msg, newOrder);
 
 	}

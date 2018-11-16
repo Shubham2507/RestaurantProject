@@ -19,6 +19,7 @@ import com.infogain.api.repo.MenuRepository;
 
 @Service("menuService")
 public class MenuServiceImpl implements IMenuService {
+	
 	@Autowired
 	private MenuRepository menuRepo;
 

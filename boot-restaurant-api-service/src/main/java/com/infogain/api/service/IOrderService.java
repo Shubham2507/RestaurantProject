@@ -11,7 +11,7 @@ public interface IOrderService {
 
 	OrderPlaced findOrderById(int orderId);
 
-	int addOrder(OrderPlaced order);
+	List<OrderPlaced> addOrder(OrderPlaced order);
 
 	OrderPlaced updateOrder(OrderPlaced order);
 

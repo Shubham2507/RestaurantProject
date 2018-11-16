@@ -13,7 +13,7 @@ import com.infogain.api.repo.CartRepository;
 import com.infogain.api.*;
 
 @Service("cartService")
-public class CartServiceImpl implements ICartService {
+public class CartServiceImpl  implements ICartService {
 	@Autowired
 	private CartRepository cartRepo;
 
@@ -34,6 +34,7 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public String addItemToCart(Cart newCart) {
 		String output="";
+		
 		Cart newCarts = cartRepo.findByItemIdAndUsername(newCart.getItemId(),newCart.getUsername()); 
 		if (newCarts!=null)
 		{
@@ -67,8 +68,9 @@ public class CartServiceImpl implements ICartService {
 	
 	@Override
 	@Transactional
-	public String updateCart(Cart cart) {
-		Cart newItem = cartRepo.getOne(cart.getCartId());
+	public Cart updateCart(Cart cart) {
+		Cart newItem ;
+		newItem= cartRepo.getOne(cart.getCartId());
 		String temp ="";
 		if (cart.getQuantity() == 0) {
 			deleteOneCart(cart.getCartId());
@@ -82,7 +84,7 @@ public class CartServiceImpl implements ICartService {
 			temp="Updated Successfully!";
 
 		}
-		return temp;
+		return newItem;
 
 
 	}

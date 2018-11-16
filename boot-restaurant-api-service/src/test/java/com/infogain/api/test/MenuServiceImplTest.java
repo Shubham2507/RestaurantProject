@@ -1,4 +1,4 @@
-package com.infogain.api.testService;
+package com.infogain.api.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -87,6 +87,7 @@ public class MenuServiceImplTest{
 		mdto.setRate(100);
 		MenuDto mDto = menuService.addItem(mdto);
 		assertNotNull(mDto);
+		
 	}
 
 	@Test
@@ -104,14 +105,12 @@ public class MenuServiceImplTest{
 
 	@Test
 	public void testDeleteMenuNotPresent() throws Exception {
-		menu.setItem_Id(18);
-		menu.setCategory("snacks");
-		menu.setItem_Name("abcd");
-		menu.setItem_Name("Chooley");
-		menu.setDescription("hff");
-		menu.setQuantity(1);
-		menu.setRate(200);
-
+		menu.setCategory("nothing");
+		menu.setDescription("nothing new");
+		menu.setItemId(1);
+		menu.setItemName("hhh");
+		menu.setQuantity(2);
+		menu.setRate(100);
 		String response = menuService.deleteAllMenu();
 		assertNotEquals("Deletion Not Successful", response);
 
