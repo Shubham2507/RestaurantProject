@@ -79,7 +79,7 @@ public class CartController {
 	@PutMapping
 	public ResponseData updateCart( @RequestBody Cart cart) {
 
-		Cart newCart=cartService.updateCart( cart);
+		String newCart=cartService.updateCart( cart);
 
 		return new ResponseData("200", msg, newCart);
 	}

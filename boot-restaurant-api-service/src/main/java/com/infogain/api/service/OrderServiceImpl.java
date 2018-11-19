@@ -75,6 +75,25 @@ public class OrderServiceImpl implements IOrderService {
 		orderRepo.save(newOrder);
 		return newOrder;
 	}
+
+	@Override
+	public List<OrderPlaced> getAllUsers(String username) {
+		List<OrderPlaced> orderplaced=new ArrayList<>();
+		List<OrderPlaced> orderplaced1=new ArrayList<>();
+	List<Integer> manualId=orderRepo.findByorderId1(username);
+	for(Integer oid:manualId)
+	{
+		System.out.println(oid);
+		
+		orderplaced1= orderRepo.getAllByorderId(oid);
+		orderplaced.addAll(orderplaced1);
+
+	
+	}
+	
+        return orderplaced;
+	}
+
 	
 
 }

@@ -14,5 +14,10 @@ public interface IOrderService {
 	List<OrderPlaced> addOrder(OrderPlaced order);
 
 	OrderPlaced updateOrder(OrderPlaced order);
+	
+	List<OrderPlaced> getAllUsers(String username);
+	/*
+	int getManualId(int orderId);*/
+
 
 }

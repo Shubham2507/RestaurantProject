@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +39,17 @@ public class OrderController {
 		List<OrderPlaced> order = orderedService.getAllOrder();
 		return new ResponseData("200", msg, order);
 	}
+	
+
+	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@GetMapping("/users/{username}")
+	public ResponseData getAllUserDetails(@PathVariable("username") String username) {
+
+		List<OrderPlaced> orders = orderedService.getAllUsers(username);
+		return new ResponseData("200", msg, orders);
+	}
+	
 	@CrossOrigin
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@PostMapping
