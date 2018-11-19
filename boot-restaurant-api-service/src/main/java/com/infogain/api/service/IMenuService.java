@@ -15,7 +15,7 @@ public interface IMenuService {
 
 	MenuDto addItem(MenuDto menuDto);
 
-	MenuDto updateMenu(MenuDto menuDto);
+/*	MenuDto updateMenuURL(int itemId,MenuDto menuDto);*/
 
 	void deleteAllMenu();
 

@@ -79,12 +79,6 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public MenuDto updateMenu(MenuDto menuDto) {
-		
-		return null;
-	}
-
-	@Override
 	public void deleteAllMenu() {
 		menuRepo.deleteAll();
 
