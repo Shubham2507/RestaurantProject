@@ -40,13 +40,23 @@ public class OrderController {
 		return new ResponseData("200", msg, order);
 	}
 	
-
+/*
 	@CrossOrigin
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@GetMapping("/users/{username}")
 	public ResponseData getAllUserDetails(@PathVariable("username") String username) {
 
 		List<OrderPlaced> orders = orderedService.getAllUsers(username);
+		return new ResponseData("200", msg, orders);
+	}*/
+	
+
+	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@GetMapping("/users/{username}")
+	public ResponseData getAllUserDetails(@PathVariable("username") String username) {
+
+		List<List<OrderPlaced>> orders = orderedService.getUserDetails(username);
 		return new ResponseData("200", msg, orders);
 	}
 	

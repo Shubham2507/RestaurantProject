@@ -81,11 +81,13 @@ public class OrderServiceImpl implements IOrderService {
 		List<OrderPlaced> orderplaced=new ArrayList<>();
 		List<OrderPlaced> orderplaced1=new ArrayList<>();
 	List<Integer> manualId=orderRepo.findByorderId1(username);
+
 	for(Integer oid:manualId)
 	{
+		
 		System.out.println(oid);
 		
-		orderplaced1= orderRepo.getAllByorderId(oid);
+		//orderplaced1= orderRepo.getAllByorderId(oid);
 		orderplaced.addAll(orderplaced1);
 
 	
@@ -94,6 +96,28 @@ public class OrderServiceImpl implements IOrderService {
         return orderplaced;
 	}
 
+	public List<List<OrderPlaced>> getUserDetails(String username)
+	{
+		List<List<OrderPlaced>> listOLists = new ArrayList<List<OrderPlaced>>();
+		List<OrderPlaced> singleList = new ArrayList<OrderPlaced>();
+		List<Integer> manualId=orderRepo.findByorderId1(username);
+		
+		for(Integer oid:manualId)
+		{
+			System.out.println(oid);
+		
+			singleList=orderRepo.getAllByorderId1(oid);
+			singleList.addAll(singleList);
+			listOLists=orderRepo.getAllByorderId(oid);
+			listOLists.addAll(listOLists);
+			listOLists.add(singleList);
+			//listOLists.addAll( orderRepo.getAllByorderId(oid));
+		
+		}
+		return listOLists;
+		
+
+	}
 	
 
 }

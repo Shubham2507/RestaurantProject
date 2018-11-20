@@ -19,5 +19,7 @@ public interface IOrderService {
 	/*
 	int getManualId(int orderId);*/
 
+	List<List<OrderPlaced>> getUserDetails(String username);
+
 
 }
