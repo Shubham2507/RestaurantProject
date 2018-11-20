@@ -10,9 +10,9 @@ public interface IOrderService {
 
 	List<OrderPlaced> getAllOrder();
 
-	OrderPlaced findOrderById(int orderId);
+	List<OrderPlaced> findOrderById(int orderId);
 
-	int addOrder(OrderPlaced order);
+	OrderPlaced addOrder(OrderPlaced order);
 
 	OrderPlaced updateOrder(OrderPlaced order);
 	/* Cart find(String username); */

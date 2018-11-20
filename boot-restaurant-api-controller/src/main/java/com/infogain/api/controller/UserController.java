@@ -52,13 +52,18 @@ try {
 			}*/
 			String address=user.getAddress();
 			/*return userService.save(user);*/
-			httpResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+			httpResponse.setStatus(HttpServletResponse.SC_OK);
 			return new ResponseData("200", "Sign-Up Successfull", userService.save(user));
 }
 catch(Exception e)
 {
-	 httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-	return new ResponseData("401", "Sign-Up Not Successfull", name);
+	 httpResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+	 ResponseData response= new ResponseData();
+	 response.setCode("409");
+ 	response.setMessage("Sign up not Successfull");
+ 	response.setResponse(name);
+	return response;
+ 	//return new ResponseData("409", "Sign-Up Not Successfull", name);
 }
 
 		}

@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderPlaced, Integer> {
-	OrderPlaced findByorderId(int id);
+	List<OrderPlaced> findByorderId(int id);
 	
 	
 	

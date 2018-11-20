@@ -23,6 +23,7 @@ public class CartController {
 	private ICartService cartService;
 	String msg = "Following Data Found";
 	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseData getEmps() {
 
@@ -38,7 +39,7 @@ public class CartController {
 
 	}*/
 	@CrossOrigin
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@RequestMapping(value="/add",method = RequestMethod.POST)
 public ResponseData addNew(@RequestBody Cart cart) {
 		
@@ -49,6 +50,7 @@ public ResponseData addNew(@RequestBody Cart cart) {
 	
 
 	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
 public String deleteEmp(@PathVariable("id") int cartId) {
 		
@@ -56,6 +58,7 @@ public String deleteEmp(@PathVariable("id") int cartId) {
 		return "Deletion Successful of eId= "+cartId;		
 	}
 	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@RequestMapping(method=RequestMethod.DELETE)
 public String deleteAll() {
 		
@@ -64,6 +67,7 @@ public String deleteAll() {
 		
 	}
 	@RequestMapping( method=RequestMethod.PUT)
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	public ResponseData updateCart( @RequestBody Cart cart) {
 			
 			String newCart=cartService.updateCart( cart);

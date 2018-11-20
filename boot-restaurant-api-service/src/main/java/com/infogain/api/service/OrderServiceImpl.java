@@ -23,50 +23,31 @@ public class OrderServiceImpl implements IOrderService {
 	private OrderRepository orderRepo;
 	@Autowired
 	private CartRepository cartRepo;
-	
+
 
 	@Override
 	public List<OrderPlaced> getAllOrder() {
-		 List<OrderPlaced> order = orderRepo.findAll();
+		List<OrderPlaced> order = orderRepo.findAll();
 		return order;
 	}
 
 	@Override
-	public OrderPlaced findOrderById(int orderId) {
-		OrderPlaced newOrder=orderRepo.findByorderId(orderId);
+	public List<OrderPlaced> findOrderById(int orderId) {
+		List<OrderPlaced> newOrder=orderRepo.findByorderId(orderId);
 		return newOrder;
 	}
 
 	@Override
 	@Transactional
-	public int addOrder(OrderPlaced order) {
-		/*CartServiceImpl cartService=new CartServiceImpl();
-		Cart cart=cartService.find(order.getUsername());
-		OrderedItemServiceImpl temp=new OrderedItemServiceImpl();
-		OrderedItem orderItem=null;
-		Set<OrderedItem> orderedItemset=new HashSet<>();
-		for (Cart cartList : cart)
-		{
-			orderItem=temp.addOrderedItem(cart);	
-			orderedItemset.add(orderItem);
-			
-		//}
-		OrderPlaced orderP=new OrderPlaced();
-		orderP.setOrderStatus("Arrived");
-		orderP.setOrderedItem(orderedItemset);
-		orderP.setUsername(order.getUsername());
-		
-		
-		OrderPlaced newOrder=orderRepo.save(order);*/
-		
-		
+	public OrderPlaced addOrder(OrderPlaced order) {
+
 		List<Cart >cartItems=cartRepo.getAllByUsername(order.getUsername());
-		
+
 		int order_id = (int) (System.currentTimeMillis() & 0xfffffff);
-		
+		OrderPlaced temp=null;
 		for(Cart cart:cartItems)
 		{
-			OrderPlaced temp=new OrderPlaced();
+			temp=new OrderPlaced();
 			temp.setCategory(cart.getCategory());
 			temp.setDescription(cart.getDescription());
 			temp.setItemId(cart.getItemId());
@@ -77,14 +58,14 @@ public class OrderServiceImpl implements IOrderService {
 			temp.setTotalPrice(cart.getTotalPrice());
 			temp.setUsername(cart.getUsername());
 			temp.setOrderId(order_id);
-			
+
 			orderRepo.save(temp);
-			
+
 			cartRepo.deleteByUsername(order.getUsername());
-			
+
 		}
-	
-		return order_id ;//newOrder;
+
+		return temp;//newOrder;
 	}
 
 	@Override

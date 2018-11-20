@@ -21,22 +21,22 @@ public class OrderPlaced {
 	@Column(name = "Auto_Id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-    
-	
+
+
 	@Column(name="Manual_OrderId")
 	private int orderId; 
-	
+
 	@Column(name = "Order_Status")
 	private String orderStatus;
 
 
-	
+
 	@Column(name = "Username")
 	private String username;
-	
+
 	@Column(name = "Item_Id")
 	private int itemId;
-	
+
 	@Column(name = "Item_Name")
 	private String itemName;
 
@@ -45,13 +45,13 @@ public class OrderPlaced {
 
 	@Column(name = "Category")
 	private String category;
-	
+
 	@Column(name = "quantity")
 	private int quantity;
 
 	@Column(name = "Item_Description")
 	private String description;
-	
+
 	@Column(name = "total_price")
 	private int totalPrice;
 
@@ -83,6 +83,8 @@ public class OrderPlaced {
 		return category;
 	}
 
+	
+
 	public void setCategory(String category) {
 		this.category = category;
 	}
@@ -111,11 +113,11 @@ public class OrderPlaced {
 		this.totalPrice = totalPrice;
 	}
 
-	
+
 	/*@OneToMany(cascade = CascadeType.ALL)
 	private Set<OrderedItem> orderedItem;*/
 
-	
+
 	public String getOrderStatus() {
 		return orderStatus;
 	}
@@ -128,7 +130,7 @@ public class OrderPlaced {
 		this.id = id;
 	}
 
-	
+
 	public int getOrderId() {
 		return orderId;
 	}
@@ -143,7 +145,6 @@ public class OrderPlaced {
 
 
 
-	
 	public String getUsername() {
 		return username;
 	}
@@ -154,6 +155,21 @@ public class OrderPlaced {
 
 	public OrderPlaced() {
 		super();
+	}
+	public OrderPlaced(int id, int orderId, String orderStatus, String username, int itemId, String itemName, int rate,
+			String category, int quantity, String description, int totalPrice) {
+		super();
+		this.id = id;
+		this.orderId = orderId;
+		this.orderStatus = orderStatus;
+		this.username = username;
+		this.itemId = itemId;
+		this.itemName = itemName;
+		this.rate = rate;
+		this.category = category;
+		this.quantity = quantity;
+		this.description = description;
+		this.totalPrice = totalPrice;
 	}
 
 }
