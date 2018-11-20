@@ -1,12 +1,10 @@
 package org.boot.restaurant.api.dto;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CartDto {
-	@NotNull(message = "CartId is required field")
+	
 	private Integer cartId;
 	private String totalPrice;
 	private String username;
@@ -89,7 +87,7 @@ public class CartDto {
 		this.description = description;
 	}
 
-	public CartDto(@NotNull(message = "CartId is required field") Integer cartId, String totalPrice, String username,
+	public CartDto( Integer cartId, String totalPrice, String username,
 			int itemId, String itemName, int rate, String category, int quantity, String description) {
 		super();
 		this.cartId = cartId;

@@ -19,6 +19,7 @@ import com.infogain.api.repo.MenuRepository;
 
 @Service("menuService")
 public class MenuServiceImpl implements IMenuService {
+	
 	@Autowired
 	private MenuRepository menuRepo;
 
@@ -68,7 +69,7 @@ public class MenuServiceImpl implements IMenuService {
 	public MenuDto addItem(MenuDto menuDto) {
 		Menu menu = new Menu();
 
-		menu.setItem_Name(menuDto.getItemName());
+		menu.setItemName(menuDto.getItemName());
 		menu.setDescription(menuDto.getDescription());
 		menu.setCategory(menuDto.getCategory());
 		menu.setQuantity(menuDto.getQuantity());
@@ -80,13 +81,14 @@ public class MenuServiceImpl implements IMenuService {
 
 	@Override
 	public MenuDto updateMenu(MenuDto menuDto) {
-		//
+		
 		return null;
 	}
 
 	@Override
-	public void deleteAllMenu() {
+	public String deleteAllMenu() {
 		menuRepo.deleteAll();
+		return "Deletion Successful";
 
 	}
 
@@ -95,7 +97,10 @@ public class MenuServiceImpl implements IMenuService {
 	public MenuDto updateMenuURL(int itemId, MenuDto menuDto) {
 		Menu menu = menuRepo.getOne(itemId);
 		menu.setRate(menuDto.getRate());
-
+		menu.setCategory(menuDto.getCategory());
+		menu.setDescription(menuDto.getDescription());
+		menu.setItemName(menuDto.getItemName());
+		menu.setQuantity(menuDto.getQuantity());
 		return menuDto;
 	}
 

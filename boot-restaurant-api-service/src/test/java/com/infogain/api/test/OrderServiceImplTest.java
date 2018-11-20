@@ -1,95 +1,86 @@
 package com.infogain.api.test;
-import static org.junit.Assert.*;
 
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.model.InitializationError;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.infogain.api.entity.OrderPlaced;
 import com.infogain.api.repo.OrderRepository;
+
 import com.infogain.api.service.OrderServiceImpl;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration
-@SpringBootTest
+@SpringBootTest(classes=OrderServiceImpl.class)
 public class OrderServiceImplTest {
 
 	@Autowired
 	private OrderServiceImpl osi;
-
 	@MockBean
-	private OrderRepository orderRepo;	
+	private OrderRepository orderRepo;
 
-	@Test
-	public void testgetAllOrder()throws InitializationError 
-	{
 
-		List<OrderPlaced> orderPlaced=new ArrayList<>();
-		orderPlaced.add(new OrderPlaced(1,1345,"Arriving","vishal",4,"Garlic bread",200,"snacks",2,"Gralicdipped",400));
-		orderPlaced.add(new OrderPlaced(2,134567,"Arriving","vishal",6,"Garlic bread",200,"snacks",2,"Gralicdipped",400));
-		Mockito.when(osi.getAllOrder()).thenReturn(orderPlaced);
-		List<OrderPlaced> order=osi.getAllOrder();
-		assertNotNull(order);
-
+	OrderPlaced orderPlaced=new OrderPlaced();
+	List<OrderPlaced> order= new ArrayList<>();
+	@Test
+	public void testGetAllOrder()throws Exception
+	{
+		
+		order.add(new OrderPlaced(1,123,"Arriving","vishal",2,"testitem",250,"snacks",2,"nothing new",500));
+		order.add(new OrderPlaced(2,135,"Placed","vinod",3,"testitem2",100,"snacks",1,"nothing new in this",100));
+		when(orderRepo.findAll()).thenReturn(order);
+		List<OrderPlaced> orderLst = osi.getAllOrder();
+		assertNotNull(orderLst);
 	}
 	@Test
-	public void testfindOrderById()
+	public void testAddOrderDetail()throws Exception
 	{
-		List<OrderPlaced> orderPlaced=new ArrayList<>();
-		orderPlaced.add(new OrderPlaced(1,1345,"Arriving","vishal",4,"Garlic bread",200,"snacks",2,"Gralicdipped",400));
-		orderPlaced.add(new OrderPlaced(2,134567,"Arriving","vishal",6,"Garlic bread",200,"snacks",2,"Gralicdipped",400));
-		Mockito.when(osi.findOrderById(Mockito.anyInt())).thenReturn(orderPlaced);
-		List<OrderPlaced> order=osi.getAllOrder();
-		assertNotNull(order);
+		orderPlaced.setId(1);
+		orderPlaced.setOrderId(12345);
+		orderPlaced.setCategory("snacks");
+		orderPlaced.setDescription("nothing new");
+		orderPlaced.setItemId(2);
+		orderPlaced.setItemName("new");
+		orderPlaced.setOrderStatus("placed");
+		orderPlaced.setQuantity(1);
+		orderPlaced.setRate(100);
+		orderPlaced.setTotalPrice(100);
+		orderPlaced.setUsername("vishal");
+		order.add(orderPlaced);
+        when(orderRepo.save(orderPlaced)).thenReturn(orderPlaced);
+        List<OrderPlaced> orderPlace=osi.getAllOrder();
+        assertNotNull(orderPlace);
+        
 	}
 	@Test
-	public void testaddOrder()
+	public void testUpdateOrderDetails()throws Exception
 	{
-		OrderPlaced order=new OrderPlaced();
-		order.setId(1);
-		order.setOrderId(1234589);
-		order.setOrderStatus("Arriving");
-		order.setUsername("priyanka");
-		order.setItemId(4);
-		order.setItemName("Bread");
-		order.setRate(300);
-		order.setCategory("snacks");
-		order.setQuantity(2);
-		order.setDescription("");
-		order.setTotalPrice(600);
-		Mockito.when(osi.addOrder(Mockito.any())).thenReturn(order);
-		OrderPlaced order1=osi.addOrder(order);
-		assertNotNull(order1);
+		orderPlaced.setId(1);
+		orderPlaced.setOrderId(12345);
+		orderPlaced.setCategory("snacks");
+		orderPlaced.setDescription("nothing new");
+		orderPlaced.setItemId(2);
+		orderPlaced.setItemName("new");
+		orderPlaced.setOrderStatus("placed");
+		orderPlaced.setQuantity(1);
+		orderPlaced.setRate(100);
+		orderPlaced.setTotalPrice(100);
+		orderPlaced.setUsername("vishal");
+		 when(orderRepo.save(orderPlaced)).thenReturn(orderPlaced);
+	       /*OrderPlaced orderPlace=osi.updateOrder(orderPlaced);
+	        assertNotNull(orderPlace);*/
+		
+		
 	}
-	@Test
-	public void testupdateOrder()
-	{
-		OrderPlaced order=new OrderPlaced();
-		order.setId(1);
-		order.setOrderId(1234589);
-		order.setOrderStatus("Arriving");
-		order.setUsername("priyanka");
-		order.setItemId(4);
-		order.setItemName("Bread");
-		order.setRate(300);
-		order.setCategory("snacks");
-		order.setQuantity(2);
-		order.setDescription("");
-		order.setTotalPrice(600);
-		Mockito.when(osi.addOrder(Mockito.any())).thenReturn(order);
-		OrderPlaced order1=osi.addOrder(order);
-		assertNotNull(order1);
-	}
+	
 }

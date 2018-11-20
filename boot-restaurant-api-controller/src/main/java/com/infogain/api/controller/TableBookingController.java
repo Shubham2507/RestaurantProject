@@ -14,73 +14,57 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import com.infogain.api.entity.Cart;
+import com.infogain.api.entity.TableBooking;
 import com.infogain.api.response.ResponseData;
-import com.infogain.api.service.ICartService;
+import com.infogain.api.service.ITableBookingService;
 
-@RestController("cartController")
-@RequestMapping("/poc/cart")
+
+@RestController("tableBookingController")
+@RequestMapping("/poc/tablebooking")
 @EnableWebMvc
-public class CartController {
+public class TableBookingController {
 	
-
 	@Autowired
-	private ICartService cartService;
+	private ITableBookingService tableBookService;
+	
 	String msg = "Following Data Found";
 	@CrossOrigin
-
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-
 	@GetMapping
-	public ResponseData getCart() {
-
-		List<Cart> cart = cartService.getAllCart();
-		return new ResponseData("200", msg, cart);
+	
+	public ResponseData getBookedTables()
+	{
+		List<TableBooking> tableBooking=tableBookService.getAllBookedTables();
+		return new ResponseData("200", msg, tableBooking);
+		
 	}
-
-
 	@CrossOrigin
-
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	@PostMapping("/add")
-	public ResponseData addItem(@RequestBody Cart cart) {
+	@PostMapping()
+	
+	public ResponseData addBookedTable(@RequestBody TableBooking table) 
+	{
+		String table1=tableBookService.bookTable(table);
 
-
-		String carts = cartService.addItemToCart(cart);
-		return new ResponseData("200", msg, carts);
-
+		return new ResponseData("200",msg,table1);
+		
 	}
-
-
 	@CrossOrigin
-
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-
 	@DeleteMapping(value="/{id}")
-	public String deleteOneCart(@PathVariable("id") int cartId) {
+	public String deleteOneTableBooked(@PathVariable("id") int tableId) {
 
 
-		cartService.deleteOneCart(cartId);
-		return "Deletion Successful of cartId= "+cartId;		
+		tableBookService.deleteOneTableBooking(tableId);
+		return "Deletion Successful of tableId = "+tableId;		
 	}
-	@CrossOrigin
-
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	@DeleteMapping
-	public String deleteAll() {
-		cartService.deleteAllCart();
-		return "Deleted All Item From Cart";
-
-	}
-
 	@CrossOrigin
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@PutMapping
-	public ResponseData updateCart( @RequestBody Cart cart) {
+	public ResponseData updateBookedTable( @RequestBody TableBooking table) {
 
-		String newCart=cartService.updateCart( cart);
+		String tableModified=tableBookService.updateTableBooking(table);
 
-		return new ResponseData("200", msg, newCart);
+		return new ResponseData("200", msg, tableModified);
 	}
 }

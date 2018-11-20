@@ -4,14 +4,18 @@ import java.util.List;
 
 import org.boot.restaurant.api.dto.MenuDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.infogain.api.entity.Menu;
 import com.infogain.api.repo.MenuRepository;
@@ -22,34 +26,43 @@ import com.infogain.api.service.IMenuService;
 
 @RestController("menuController")
 @RequestMapping("/poc/restaurant")
+@EnableWebMvc
 public class MenuController {
+	
 	@Autowired 
-	IMenuService menuService;
+	private IMenuService menuService;
 	@Autowired
-	MenuRepository menuRepository;
+	private MenuRepository menuRepository;
 
 	//get All Menu
+    @CrossOrigin
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public ResponseData getMenu() {
 
-		List<Menu> menu = menuRepository.findAll();
+		List<MenuDto> menu = menuService.getAllMenu();
 		return new ResponseData("200", "List of Menu", menu);
+		
 
 	}
 	//get Menu by item id	
+
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@CrossOrigin
+	@GetMapping(value = "/{id}")
 	public ResponseData findOne(@PathVariable(value = "id") int menuId) {
 
 		MenuDto menudto = menuService.findOneMenu(menuId);
 		return new ResponseData("200", "Following Menu Found", menudto);
 
 	}
+
+
 	//add Menu
+   
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	
-	@RequestMapping(method = RequestMethod.POST, consumes= {MediaType.APPLICATION_JSON_VALUE})
+	@CrossOrigin
+    @PostMapping
 	public ResponseData addItemInMenu(@RequestBody MenuDto menuDto) {
 
 		menuDto = menuService.addItem(menuDto);
@@ -57,13 +70,24 @@ public class MenuController {
 
 	}
 	//delete one
+
+   
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	@RequestMapping(value = "/{id}", method=RequestMethod.DELETE)
+	@CrossOrigin
+	@DeleteMapping(value="/{id}")
 	public String deleteDept(@PathVariable("id") int menuId) {
 
 		menuService.deleteOneMenu(menuId);
 		return "Deletion Successful";	
 	}
-	//	
+	//	update
+	@CrossOrigin
+	@PutMapping(value="/{id}")
+	public ResponseData updateMenu(@PathVariable("id") int itemId,@RequestBody MenuDto menuDto)
+	{
+		MenuDto menuDto1=menuService.updateMenuURL(itemId, menuDto);
+		return new ResponseData("200", "Added successfuly", menuDto1);
+		
+	}
 
 }

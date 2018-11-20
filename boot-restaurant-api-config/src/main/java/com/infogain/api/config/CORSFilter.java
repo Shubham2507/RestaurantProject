@@ -20,6 +20,7 @@ public class CORSFilter implements Filter {
 		System.out.println("Filtering on...........................................................");
 
 		HttpServletResponse response = (HttpServletResponse) res;
+
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
@@ -28,13 +29,18 @@ public class CORSFilter implements Filter {
 
 
 
+		
 
 
 		chain.doFilter(req, res);
 	}
 
-	public void init(FilterConfig filterConfig) {}
+	public void init(FilterConfig filterConfig) {// initializing
+		}
+	
 
-	public void destroy() {}
+	public void destroy() {
+		//destroy
+	}
 
 }
