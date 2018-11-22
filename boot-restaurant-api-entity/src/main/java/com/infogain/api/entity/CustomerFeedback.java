@@ -21,10 +21,10 @@ public class CustomerFeedback {
 	@Column(name="FeedbackId")
 	private int feedbackId;
 	
-	
+	@NotNull
 	@Min(1)
 	@Column(nullable=false,name="UserId")
-	private int userId;
+	private Integer userId;
 	
 	@Column(name="Food_Rating")
 	private int foodRating;
