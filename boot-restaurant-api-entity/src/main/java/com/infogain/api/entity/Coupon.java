@@ -8,8 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="Coupon")
@@ -19,36 +18,76 @@ public class Coupon {
 	@Column(name="Coupon_Code")
 	private String code;
 	
-	@Column(name="Coupon_Value")
-	private int value;
+	@NotNull
+	@Column(nullable=false,name="Discount_Percentage")
+	private float discountPercentage;
 	
-	@Column(name="Release_Date")
-//	@DateTimeFormat(pattern = "dd-MM-yy")
+	@NotNull
+	@Column(nullable=false,name="Maximum_Discount")
+	private float maximumDiscount;
+	
+	@NotNull
+	@Column(nullable=false,name="BillAmount")
+	public int billAmount;
+	
+	
+	@NotNull
+	@Column(nullable=false,name="Release_Date") 
 	@Temporal(TemporalType.DATE)
+	//@DateTimeFormat(pattern = "yyy-MM-dd")
 	private Date releaseDate;
 	
-	@Column(name="Expiry_Date")
-	//@DateTimeFormat(pattern = "dd-MM-yy")
+	@NotNull
+	@Column(nullable=false,name="Expiry_Date")
 	@Temporal(TemporalType.DATE)
+	//@DateTimeFormat(pattern = "yyy-MM-dd")	
 	private Date expiryDate;
 
-	@Column(name="Number_Of_Coupons")
+	@NotNull
+	@Column(nullable=false,name="Number_Of_Coupons")
 	private int quantity;
-	
 
-	public Coupon() {
-		super();
+	@NotNull
+	@Column(nullable=false,name="Terms_and_Conditions")
+	private String termsAndConditions;
+
+	
+	public Coupon() { 
 	}
 
-
-	public Coupon(String code, int value, Date releaseDate, Date expiryDate, int quantity) {
+	
+	public Coupon(String code, @NotNull float discountPercentage, @NotNull float maximumDiscount,
+			@NotNull int billAmount, @NotNull Date releaseDate, @NotNull Date expiryDate, @NotNull int quantity,
+			@NotNull String termsAndConditions) {
 		super();
 		this.code = code;
-		this.value = value;
+		this.discountPercentage = discountPercentage;
+		this.maximumDiscount = maximumDiscount;
+		this.billAmount = billAmount;
 		this.releaseDate = releaseDate;
 		this.expiryDate = expiryDate;
 		this.quantity = quantity;
+		this.termsAndConditions = termsAndConditions;
 	}
+
+
+
+
+
+	public int getBillAmount() {
+		return billAmount;
+	}
+
+
+
+
+
+	public void setBillAmount(int billAmount) {
+		this.billAmount = billAmount;
+	}
+
+
+
 
 
 	public String getCode() {
@@ -56,26 +95,41 @@ public class Coupon {
 	}
 
 
+
 	public void setCode(String code) {
 		this.code = code;
 	}
 
 
-	public int getValue() {
-		return value;
-	}
 
-
-	public void setValue(int value) {
-		this.value = value;
+	public float getDiscountPercentage() {
+		return discountPercentage;
 	}
 
 
 
-//	@JsonSerialize(using=JsonDateSerializer.class)
+	public void setDiscountPercentage(float discountPercentage) {
+		this.discountPercentage = discountPercentage;
+	}
+
+
+
+	public float getMaximumDiscount() {
+		return maximumDiscount;
+	}
+
+
+
+	public void setMaximumDiscount(float maximumDiscount) {
+		this.maximumDiscount = maximumDiscount;
+	}
+
+
+
 	public Date getReleaseDate() {
 		return releaseDate;
 	}
+
 
 
 	public void setReleaseDate(Date releaseDate) {
@@ -83,10 +137,11 @@ public class Coupon {
 	}
 
 
-	//@JsonSerialize(using=JsonDateSerializer.class)
+
 	public Date getExpiryDate() {
 		return expiryDate;
 	}
+
 
 
 	public void setExpiryDate(Date expiryDate) {
@@ -94,9 +149,11 @@ public class Coupon {
 	}
 
 
+
 	public int getQuantity() {
 		return quantity;
 	}
+
 
 
 	public void setQuantity(int quantity) {
@@ -104,13 +161,27 @@ public class Coupon {
 	}
 
 
+
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+
+
+
+	public void setTermsAndConditions(String termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
+	}
+
+
 	@Override
 	public String toString() {
-		return "Coupon [code=" + code + ", value=" + value + ", releaseDate=" + releaseDate + ", expiryDate="
-				+ expiryDate + ", quantity=" + quantity + "]";
+		return "Coupon [code=" + code + ", discountPercentage=" + discountPercentage + ", maximumDiscount="
+				+ maximumDiscount + ", billAmount=" + billAmount + ", releaseDate=" + releaseDate + ", expiryDate="
+				+ expiryDate + ", quantity=" + quantity + ", termsAndConditions=" + termsAndConditions + "]";
 	}
-	
-	
+
+
+
 	
 
 }
