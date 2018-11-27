@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
 @ControllerAdvice
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler
@@ -18,15 +19,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   public final ResponseEntity<ExceptionResponse> handleCouponNotFoundException(CouponNotFoundException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
+        request.getDescription(false),HttpStatus.NOT_FOUND.value());
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
   
-  @ExceptionHandler(BillDetailsNotFoundException.class)
-  public final ResponseEntity<ExceptionResponse> handleBillDetailsNotFoundException(BillDetailsNotFoundException ex, WebRequest request)
+   
+  @ExceptionHandler(CustomerFeedbackNotFoundException.class)
+  public final ResponseEntity<ExceptionResponse> handleCustomerFeedbackNotFoundException(CustomerFeedbackNotFoundException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
+        request.getDescription(false),HttpStatus.NOT_FOUND.value());
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
   
@@ -34,15 +36,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   public final ResponseEntity<ExceptionResponse> handleCouponListEmptyException(CouponListEmptyException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
+        request.getDescription(false),HttpStatus.NOT_FOUND.value());
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
   
-  @ExceptionHandler(BillDetailsListEmptyException.class)
-  public final ResponseEntity<ExceptionResponse> handleBillDetailsListEmptyException(BillDetailsListEmptyException ex, WebRequest request)
+   
+  @ExceptionHandler(CustomerFeedbackListEmptyException.class)
+  public final ResponseEntity<ExceptionResponse> handleCustomerFeedbackListEmptyException(CustomerFeedbackListEmptyException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
+        request.getDescription(false),HttpStatus.NOT_FOUND.value());
     return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
   
@@ -50,24 +53,50 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   public final ResponseEntity<ExceptionResponse> handleCouponAlreadyExistsException(CouponAlreadyExistsException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
+        request.getDescription(false),HttpStatus.CONFLICT.value());
     return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
   }
-  
-  @ExceptionHandler(BillDetailsAlreadyExistsException.class)
-  public final ResponseEntity<ExceptionResponse> handleBillDetailsAlreadyExistsException(BillDetailsAlreadyExistsException ex, WebRequest request)
+ 
+  @ExceptionHandler(CustomerFeedbackAlreadyExistsException.class)
+  public final ResponseEntity<ExceptionResponse> handleCustomerFeedbackAlreadyExistsException(CustomerFeedbackAlreadyExistsException ex, WebRequest request)
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
+        request.getDescription(false),HttpStatus.CONFLICT.value());
     return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
   }
+
   
+  @ExceptionHandler(CouponExpiredException.class)
+  public final ResponseEntity<ExceptionResponse> handleCouponExpiredException(CouponExpiredException ex, WebRequest request)
+  {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+        request.getDescription(false),HttpStatus.NOT_FOUND.value());
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+  }
+  
+  @ExceptionHandler(InvalidCustomerFeedbackRangeException.class)
+  public final ResponseEntity<ExceptionResponse> handleInvalidCustomerFeedbackRangeException(InvalidCustomerFeedbackRangeException ex, WebRequest request)
+  {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+        request.getDescription(false),HttpStatus.BAD_REQUEST.value());
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+ 
+  
+  @ExceptionHandler(CustomerFeedbackEmptyException.class)
+  public final ResponseEntity<ExceptionResponse> handleCustomerFeedbackEmptyException(CustomerFeedbackEmptyException ex, WebRequest request)
+  {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+        request.getDescription(false),HttpStatus.BAD_REQUEST.value());
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+
   
   @ExceptionHandler(Exception.class)
   public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) 
   {
     ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-        request.getDescription(false));
+        request.getDescription(false),HttpStatus.INTERNAL_SERVER_ERROR.value());
     return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
