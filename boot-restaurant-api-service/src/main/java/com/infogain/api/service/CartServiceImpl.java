@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.infogain.api.config.JwtAuthenticationFilter;
 import com.infogain.api.entity.Cart;
 
 import com.infogain.api.repo.CartRepository;
@@ -16,6 +17,9 @@ import com.infogain.api.repo.CartRepository;
 public class CartServiceImpl implements ICartService {
 	@Autowired
 	private CartRepository cartRepo;
+	
+	 @Autowired
+		private JwtAuthenticationFilter jaf;
 
 	@Override
 	public List<Cart> getAllCart() {
@@ -34,14 +38,14 @@ public class CartServiceImpl implements ICartService {
 	@Override
 	public String addItemToCart(Cart newCart) {
 		String output="";
-		Cart newCarts = cartRepo.findByItemIdAndUsername(newCart.getItemId(),newCart.getUsername()); 
+		Cart newCarts = cartRepo.findByItemIdAndUsername(newCart.getItemId(),jaf.getUsername()); 
 		if (newCarts!=null)
 		{
 			output="ITEM ALREADY EXISTS IN CART !!!!";
 		}
 		else {
 		Cart cart = new Cart();
-		cart.setUsername(newCart.getUsername());
+		cart.setUsername(jaf.getUsername());
 		cart.setItemId(newCart.getItemId());
 		cart.setItemName(newCart.getItemName());
 		cart.setDescription(newCart.getDescription());

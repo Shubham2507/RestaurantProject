@@ -1,6 +1,8 @@
 package com.infogain.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.infogain.api.entity.OrderPlaced;
 
@@ -20,6 +22,10 @@ public interface IOrderService {
 	int getManualId(int orderId);*/
 
 	List<List<OrderPlaced>> getUserDetails(String username);
+	
+	List<Map<Integer, ArrayList<OrderPlaced>>> getUsers(String username);
+
+
 
 
 }
