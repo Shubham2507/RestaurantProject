@@ -25,7 +25,7 @@ import com.infogain.api.exceptionHandler.CouponAlreadyExistsException;
 import com.infogain.api.exceptionHandler.CouponExpiredException;
 import com.infogain.api.exceptionHandler.CouponListEmptyException;
 import com.infogain.api.exceptionHandler.CouponNotFoundException;
-import com.infogain.api.response.ResponseData;
+import com.infogain.api.response.ResponseDataModified;
 import com.infogain.api.service.CouponService;
 import com.infogain.api.service.ICouponService;
 
@@ -45,7 +45,7 @@ public class CouponController {
 		if (couponList==null || couponList.isEmpty() )
 			throw new CouponListEmptyException("Coupon-List : ");
 
-		return new ResponseEntity<> (new ResponseData("200",couponList),HttpStatus.OK);
+		return new ResponseEntity<> (new ResponseDataModified("200",couponList),HttpStatus.OK);
 	}
 	
 /*	@GetMapping(value = "/filter/{amount}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,7 +69,7 @@ public class CouponController {
 
 		System.out.println("release date: "+couponObject.getReleaseDate());
 		System.out.println("expiry date: "+couponObject.getExpiryDate());
-		return new ResponseEntity<> (new ResponseData("200",couponObject),HttpStatus.OK);
+		return new ResponseEntity<> (new ResponseDataModified("200",couponObject),HttpStatus.OK);
 	}
 	
 	
@@ -88,7 +88,7 @@ public class CouponController {
 			else
 			{	
 				//System.out.println("List size is more than 0");
-				return  new ResponseEntity<>(new ResponseData("200",eligibleCouponList),HttpStatus.OK);
+				return  new ResponseEntity<>(new ResponseDataModified("200",eligibleCouponList),HttpStatus.OK);
 			}
 	
 		}
@@ -139,7 +139,7 @@ public class CouponController {
 					}
 					couponService.updateCoupon(couponObject);
 	
-					return new ResponseEntity<>(new ResponseData("200",netAmount),HttpStatus.OK);
+					return new ResponseEntity<>(new ResponseDataModified("200",netAmount),HttpStatus.OK);
 				}
 	
 				else
@@ -164,7 +164,7 @@ public class CouponController {
 		if (couponObject != null)
 			throw new CouponAlreadyExistsException("Coupon : " + coupon.getCode());
 		couponService.addCoupon(coupon);
-		return new ResponseEntity<> (new ResponseData("200",coupon),HttpStatus.OK);
+		return new ResponseEntity<> (new ResponseDataModified("200",coupon),HttpStatus.OK);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -174,7 +174,7 @@ public class CouponController {
 		if (couponObject == null)
 			throw new CouponNotFoundException("Coupon : " + coupon.getCode());
 		couponService.updateCoupon(coupon);
-		return new ResponseEntity<>(new ResponseData("200",coupon),HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseDataModified("200",coupon),HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/{code}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -185,7 +185,7 @@ public class CouponController {
 			throw new CouponNotFoundException("Coupon_Code: " + code);
 
 		couponService.deleteCoupon(code);
-		return new ResponseEntity<>(new ResponseData("410",couponObject),HttpStatus.GONE);
+		return new ResponseEntity<>(new ResponseDataModified("410",couponObject),HttpStatus.GONE);
 	}
 
 }

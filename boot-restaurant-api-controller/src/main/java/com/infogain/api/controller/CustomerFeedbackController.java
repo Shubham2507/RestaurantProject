@@ -22,7 +22,7 @@ import com.infogain.api.entity.CustomerFeedback;
 import com.infogain.api.exceptionHandler.CustomerFeedbackListEmptyException;
 import com.infogain.api.exceptionHandler.CustomerFeedbackNotFoundException;
 import com.infogain.api.exceptionHandler.InvalidCustomerFeedbackRangeException;
-import com.infogain.api.response.ResponseData;
+import com.infogain.api.response.ResponseDataModified;
 import com.infogain.api.service.ICustomerFeedbackService;
 
 @RestController
@@ -41,7 +41,7 @@ public class CustomerFeedbackController {
 		if (customerFeedbackList==null || customerFeedbackList.isEmpty() )
 			throw new CustomerFeedbackListEmptyException("Customer Feedback List : ");
 
-		return new ResponseEntity<>(new ResponseData("200", customerFeedbackList),HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseDataModified("200", customerFeedbackList),HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,7 +52,7 @@ public class CustomerFeedbackController {
 		if (customerFeedbackList==null || customerFeedbackList.isEmpty())
 			throw new CustomerFeedbackListEmptyException("Customer Feedback ");
 
-		return new ResponseEntity<>(new ResponseData("200",customerFeedbackList),HttpStatus.OK);
+		return new ResponseEntity<>(new ResponseDataModified("200",customerFeedbackList),HttpStatus.OK);
 	}
 		
 	@GetMapping(value = "/{feedbackId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,7 +63,7 @@ public class CustomerFeedbackController {
 		if (customerFeedbackObject == null)
 			throw new CustomerFeedbackNotFoundException("Customer Feedback ");
 
-		return new ResponseEntity<>( new ResponseData("200",customerFeedbackObject),HttpStatus.OK);
+		return new ResponseEntity<>( new ResponseDataModified("200",customerFeedbackObject),HttpStatus.OK);
 	}
 	
 	@PostMapping(produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +73,7 @@ public class CustomerFeedbackController {
 		if(customerFeedback.getFoodRating()<0 || customerFeedback.getFoodRating()>5 || customerFeedback.getServiceRating()<0 || customerFeedback.getServiceRating()>5 || customerFeedback.getAmbienceRating()<0 || customerFeedback.getAmbienceRating()>5)
 			throw new InvalidCustomerFeedbackRangeException("Please provide rating on a scale of 0-5");
 		customerFeedbackService.addCustomerFeedback(customerFeedback);
-		return new ResponseEntity<>( new ResponseData("200",customerFeedback),HttpStatus.OK);
+		return new ResponseEntity<>( new ResponseDataModified("200",customerFeedback),HttpStatus.OK);
 	}
 
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -87,7 +87,7 @@ public class CustomerFeedbackController {
 
 		customerFeedbackService.updateCustomerFeedback(customerFeedback);
 		
-		return new ResponseEntity<> (new ResponseData("200",customerFeedbackObject),HttpStatus.OK);
+		return new ResponseEntity<> (new ResponseDataModified("200",customerFeedbackObject),HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/{feedbackId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,7 +98,7 @@ public class CustomerFeedbackController {
 			throw new CustomerFeedbackNotFoundException("Customer Feedback ");
 
 		customerFeedbackService.deleteCustomerFeedback(feedbackId);
-		return new ResponseEntity<>(new ResponseData("410", customerFeedbackObject),HttpStatus.GONE);
+		return new ResponseEntity<>(new ResponseDataModified("410", customerFeedbackObject),HttpStatus.GONE);
 	}
 	
 	
