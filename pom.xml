@@ -33,6 +33,7 @@
 		<module>boot-restaurant-api-service</module>
 		<module>boot-restaurant-api-response</module>
 		<module>boot-restaurant-api-config</module>
+		<module>boot-restaurant-api-dao</module>
 	</modules>
 	
 

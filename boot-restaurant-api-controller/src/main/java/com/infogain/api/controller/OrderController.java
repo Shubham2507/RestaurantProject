@@ -1,10 +1,17 @@
 package com.infogain.api.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.infogain.api.dto.OrderHistory;
+import com.infogain.api.dto.OrderHistoryOfUser;
 import com.infogain.api.entity.OrderPlaced;
 import com.infogain.api.response.ResponseData;
 import com.infogain.api.service.IOrderService;
@@ -28,13 +37,25 @@ public class OrderController {
 	String msg = "Following Data Found";
 
 	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@GetMapping
 	public ResponseData getAllOrder() {
 
 		List<OrderPlaced> order = orderedService.getAllOrder();
 		return new ResponseData("200", msg, order);
 	}
+
+
 	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@GetMapping("/orderHistory")
+	public ResponseData getAllUserDetails() {
+		List<OrderHistoryOfUser>  orders = orderedService.getUserDetails();
+		return new ResponseData("200", msg, orders);
+	}
+	
+	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@PostMapping
 	public ResponseData addOrderItem(@RequestBody OrderPlaced order) {
 
@@ -43,6 +64,7 @@ public class OrderController {
 
 	}
 	@CrossOrigin
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@PutMapping
 	public ResponseData updateOrderItem( @RequestBody OrderPlaced order) {
 
