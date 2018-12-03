@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.tomcat.util.buf.UDecoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.infogain.api.config.JwtAuthenticationFilter;
 import com.infogain.api.entity.CustomerFeedback;
 import com.infogain.api.exceptionHandler.CustomerFeedbackListEmptyException;
 import com.infogain.api.exceptionHandler.CustomerFeedbackNotFoundException;
@@ -33,6 +35,7 @@ public class CustomerFeedbackController {
 	@Autowired
 	ICustomerFeedbackService customerFeedbackService;
 	
+	
 	@GetMapping()
 	public ResponseEntity<?> getAllCustomerFeedback()
 	{
@@ -45,9 +48,9 @@ public class CustomerFeedbackController {
 	}
 	
 	@GetMapping(value = "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getCustomerFeedbackByUserId(@PathVariable("userId") int userId)
+	public ResponseEntity<?> getCustomerFeedbackByUsername(@PathVariable("username") String username)
 	{
-		List<CustomerFeedback> customerFeedbackList = customerFeedbackService.getCustomerFeedbackByUserId(userId);
+		List<CustomerFeedback> customerFeedbackList = customerFeedbackService.getCustomerFeedbackByUsername(username);
 
 		if (customerFeedbackList==null || customerFeedbackList.isEmpty())
 			throw new CustomerFeedbackListEmptyException("Customer Feedback ");

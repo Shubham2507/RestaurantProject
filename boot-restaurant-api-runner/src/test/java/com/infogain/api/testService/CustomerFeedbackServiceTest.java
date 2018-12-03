@@ -39,7 +39,7 @@ public class CustomerFeedbackServiceTest {
 
 	private CustomerFeedback customerFeedbackObject() throws ParseException {
 
-		return new CustomerFeedback(1, 100, 5, 5, 5, "Excellent Service");
+		return new CustomerFeedback("khushboo", 5, 5, 5, "Excellent Service");
 	}
 
 	private List<CustomerFeedback> customerFeedbackList() throws ParseException {
@@ -63,9 +63,9 @@ public class CustomerFeedbackServiceTest {
 
 	@Test
 	public void testGetCustomerFeedbackByUserId() throws ParseException {
-		Mockito.when(customerFeedbackRepository.findByUserId(Mockito.anyInt()))
+		Mockito.when(customerFeedbackRepository.findByUsername(Mockito.anyString()))
 				.thenReturn(customerFeedbackList());
-		List<CustomerFeedback> customerFeedback = customerFeedbackService.getCustomerFeedbackByUserId(Mockito.anyInt());
+		List<CustomerFeedback> customerFeedback = customerFeedbackService.getCustomerFeedbackByUsername(Mockito.anyString());
 
 		assertEquals(1, customerFeedback.size());
 
@@ -101,7 +101,7 @@ public class CustomerFeedbackServiceTest {
 		Mockito.when(customerFeedbackRepository.save(Mockito.any())).thenReturn(customerFeedbackObject());
 		CustomerFeedback customerFeedback= customerFeedbackService.updateCustomerFeedback(Mockito.any());
 
-		assertEquals(100, customerFeedback.getUserId());
+		assertEquals(100, customerFeedback.getUsername());
 	}
 
 	@Test

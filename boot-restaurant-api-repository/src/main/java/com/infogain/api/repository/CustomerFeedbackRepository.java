@@ -11,7 +11,7 @@ import com.infogain.api.entity.CustomerFeedback;
 public interface CustomerFeedbackRepository extends CrudRepository<CustomerFeedback, Integer>{
 	
 	CustomerFeedback findByFeedbackId(int feedbackId);
-	List<CustomerFeedback> findByUserId(int userId);
+	List<CustomerFeedback> findByUsername(String username);
 	
 
 }

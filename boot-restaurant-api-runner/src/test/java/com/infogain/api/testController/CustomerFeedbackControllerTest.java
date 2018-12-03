@@ -50,17 +50,17 @@ public class CustomerFeedbackControllerTest {
 
 	}
 
-	private String customerFeedbackObjectJson = "{\"feedbackId\":1,\"userId\":100,\"foodRating\":5,\"serviceRating\":4,\"ambienceRating\":5,\"comment\":\"Excellent Service\"}";
+	private String customerFeedbackObjectJson = "{\"feedbackId\":1,\"username\":\"khushboo\",\"foodRating\":5,\"serviceRating\":4,\"ambienceRating\":5,\"comment\":\"Excellent Service\"}";
 
-	private String customerFeedbackObjectJsonInvalid = "{\"feedbackId\":1,\"userId\":100,\"foodRating\":8,\"serviceRating\":8,\"ambienceRating\":8,\"comment\":\"Excellent Service\"}";
+	private String customerFeedbackObjectJsonInvalid = "{\"feedbackId\":1,\"username\":\"khushboo\",\"foodRating\":8,\"serviceRating\":8,\"ambienceRating\":8,\"comment\":\"Excellent Service\"}";
 
 
-	private String customerFeedbackObjectJsonInvalidNegative = "{\"feedbackId\":1,\"userId\":100,\"foodRating\":-3,\"serviceRating\":-4,\"ambienceRating\":-5,\"comment\":\"Excellent Service\"}";
+	private String customerFeedbackObjectJsonInvalidNegative = "{\"feedbackId\":1,\"username\":\"khushboo\",\"foodRating\":-3,\"serviceRating\":-4,\"ambienceRating\":-5,\"comment\":\"Excellent Service\"}";
 
 	
 	private CustomerFeedback customerFeedbackObject() throws ParseException {
 		
-		return new CustomerFeedback(1, 100, 5, 4, 5, "Excellent Service");
+		return new CustomerFeedback("khushboo", 5, 4, 5, "Excellent Service");
 
 	}
 
@@ -109,7 +109,7 @@ public class CustomerFeedbackControllerTest {
 	
 	@Test
 	public void testGetCustomerFeedbackByUserId() throws Exception {
-		Mockito.when(customerFeedbackService.getCustomerFeedbackByUserId(Mockito.anyInt())).thenReturn(customerFeedbackList());
+		Mockito.when(customerFeedbackService.getCustomerFeedbackByUsername(Mockito.anyString())).thenReturn(customerFeedbackList());
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/customerfeedback/user/"+100)
 				.accept(MediaType.APPLICATION_JSON))

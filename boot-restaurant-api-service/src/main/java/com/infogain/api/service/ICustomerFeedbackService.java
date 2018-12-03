@@ -8,7 +8,7 @@ public interface ICustomerFeedbackService {
 	
 	List<CustomerFeedback> getAllCustomerFeedback();
     CustomerFeedback getCustomerFeedbackByFeedbackId(int feedbackId);
-    List<CustomerFeedback> getCustomerFeedbackByUserId(int userId);
+    List<CustomerFeedback> getCustomerFeedbackByUsername(String username);
     CustomerFeedback addCustomerFeedback(CustomerFeedback customerFeedback);
     CustomerFeedback updateCustomerFeedback(CustomerFeedback customerFeedback);
     String deleteCustomerFeedback(int feedbackId);
