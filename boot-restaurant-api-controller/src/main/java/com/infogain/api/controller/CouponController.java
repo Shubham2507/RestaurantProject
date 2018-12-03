@@ -25,7 +25,6 @@ import com.infogain.api.exceptionHandler.CouponAlreadyExistsException;
 import com.infogain.api.exceptionHandler.CouponExpiredException;
 import com.infogain.api.exceptionHandler.CouponListEmptyException;
 import com.infogain.api.exceptionHandler.CouponNotFoundException;
-import com.infogain.api.response.ResponseData;
 import com.infogain.api.service.CouponService;
 import com.infogain.api.service.ICouponService;
 
