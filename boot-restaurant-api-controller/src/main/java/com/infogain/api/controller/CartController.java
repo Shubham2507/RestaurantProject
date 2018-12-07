@@ -1,6 +1,7 @@
 package com.infogain.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.infogain.api.ExceptionHandler.ItemNotFoundInCartException;
 import com.infogain.api.entity.Cart;
+import com.infogain.api.repo.CartRepository;
 import com.infogain.api.response.ResponseData;
 import com.infogain.api.service.ICartService;
 
@@ -27,6 +30,8 @@ public class CartController {
 
 	@Autowired
 	private ICartService cartService;
+	@Autowired
+	private CartRepository cartRepository;
 	String msg = "Following Data Found";
 	@CrossOrigin
 
@@ -36,6 +41,8 @@ public class CartController {
 	public ResponseData getCart() {
 
 		List<Cart> cart = cartService.getAllCart();
+		if(cart==null)
+			throw new ItemNotFoundInCartException("Cart is Empty");
 		return new ResponseData("200", msg, cart);
 	}
 
@@ -48,6 +55,8 @@ public class CartController {
 
 
 		String carts = cartService.addItemToCart(cart);
+		if(carts==null)
+			throw new ItemNotFoundInCartException("Item Not Added");
 		return new ResponseData("200", msg, carts);
 
 	}
@@ -78,7 +87,10 @@ public class CartController {
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@PutMapping
 	public ResponseData updateCart( @RequestBody Cart cart) {
-
+int c= cart.getCartId();
+		Optional<Cart> carts=cartRepository.findById(c);
+		if(!carts.isPresent())
+			throw new ItemNotFoundInCartException("Cart with ID : "+c+ "Not Found");
 		String newCart=cartService.updateCart( cart);
 
 		return new ResponseData("200", msg, newCart);

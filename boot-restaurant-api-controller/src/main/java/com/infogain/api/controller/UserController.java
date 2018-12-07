@@ -36,22 +36,13 @@ UserServiceImpl impl= new UserServiceImpl();
 try {
 		
 		
-		
-		/*if(name.matches(user.getUsername()))
-		{
-			return new ResponseData("403", "Username already exists!!", name);
-		}
-		else {*/
 			user.setUsername(name);
 			System.out.println("username ="+user.getUsername());
 			String fname=user.getFirstname();
 			String lname=user.getLastname();
-			/*if(fname.matches(user.getFirstname())&&lname.matches(user.getLastname()))
-			{
-				return new ResponseData("403", "User is already Registered!!", name);
-			}*/
+			
 			String address=user.getAddress();
-			/*return userService.save(user);*/
+		
 			httpResponse.setStatus(HttpServletResponse.SC_OK);
 			return new ResponseData("200", "Sign-Up Successfull", userService.save(user));
 }
@@ -63,7 +54,7 @@ catch(Exception e)
  	response.setMessage("Sign up not Successfull");
  	response.setResponse(name);
 	return response;
- 	//return new ResponseData("409", "Sign-Up Not Successfull", name);
+
 }
 
 		}

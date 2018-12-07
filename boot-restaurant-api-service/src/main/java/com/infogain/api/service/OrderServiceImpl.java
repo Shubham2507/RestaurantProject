@@ -1,18 +1,18 @@
 package com.infogain.api.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.infogain.api.config.JwtAuthenticationFilter;
+import com.infogain.api.dto.OrderDto;
+import com.infogain.api.dto.OrderHistory;
+import com.infogain.api.dto.OrderHistoryOfUser;
 import com.infogain.api.entity.Cart;
 import com.infogain.api.entity.OrderPlaced;
 import com.infogain.api.repo.CartRepository;
@@ -25,34 +25,34 @@ public class OrderServiceImpl implements IOrderService {
 	private OrderRepository orderRepo;
 	@Autowired
 	private CartRepository cartRepo;
-	 @Autowired
-		private JwtAuthenticationFilter jaf;
-	
+	@Autowired
+	private JwtAuthenticationFilter jaf;
+
 
 	@Override
 	public List<OrderPlaced> getAllOrder() {
 		return orderRepo.findAll();
-		
+
 	}
 
-	@Override
+	/*@Override
 	public OrderPlaced findOrderById(int orderId) {
 		return orderRepo.findByorderId(orderId);
-		
-	}
+
+	}*/
 
 	@Override
 	@Transactional
 	public List<OrderPlaced> addOrder(OrderPlaced order) {
-		
-		
+
+
 		List<Cart>cartItems=cartRepo.getAllByUsername(jaf.getUsername());
 		List<OrderPlaced> orderplaced=new ArrayList<>();
 		int orderId = (int) (System.currentTimeMillis() & 0xfffffff);
 		OrderPlaced temp=null;
 		for(Cart cart:cartItems)
 		{
-			 temp=new OrderPlaced();
+			temp=new OrderPlaced();
 			temp.setCategory(cart.getCategory());
 			temp.setDescription(cart.getDescription());
 			temp.setItemId(cart.getItemId());
@@ -65,11 +65,11 @@ public class OrderServiceImpl implements IOrderService {
 			temp.setOrderId(orderId);
 			orderplaced.add(temp);
 			orderRepo.save(temp);
-			
+
 			cartRepo.deleteByUsername(jaf.getUsername());
-			
+
 		}
-	
+
 		return orderplaced ;
 	}
 
@@ -86,101 +86,94 @@ public class OrderServiceImpl implements IOrderService {
 	public List<OrderPlaced> getAllUsers(String username) {
 		List<OrderPlaced> orderplaced=new ArrayList<>();
 		List<OrderPlaced> orderplaced1=new ArrayList<>();
-	List<Integer> manualId=orderRepo.findByorderId1(username);
+		List<Integer> manualId=orderRepo.findDistinctByUsername(username);
 
-	for(Integer oid:manualId)
-	{
-		
-		System.out.println(oid);
-		
-		//orderplaced1= orderRepo.getAllByorderId(oid);
-		orderplaced.addAll(orderplaced1);
-
-	
-	}
-	
-        return orderplaced;
-	}
-
-	public List<List<OrderPlaced>> getUserDetails(String username)
-	{
-		List<List<OrderPlaced>> listOLists = new ArrayList<List<OrderPlaced>>();
-		//List<List<OrderPlaced>> listOLists1 = new ArrayList<List<OrderPlaced>>();
-		List<OrderPlaced> singleList = new ArrayList<OrderPlaced>();
-		List<OrderPlaced> singleList1 = new ArrayList<OrderPlaced>();
-		List<OrderPlaced> singleList2 = new ArrayList<OrderPlaced>();
-		List<OrderPlaced> singleList3 = new ArrayList<OrderPlaced>();
-		List<Integer> manualId=orderRepo.findByorderId1(username);
-		
 		for(Integer oid:manualId)
 		{
+
 			System.out.println(oid);
-		
-			singleList1=orderRepo.getAllByorderId1(oid);
-			singleList.addAll(singleList1);
-		/*	listOLists1=orderRepo.getAllByorderId(oid);
-			listOLists.addAll(listOLists1);*/
-			singleList2=orderRepo.getAllByorderId(oid);
-			singleList3.addAll(singleList2);
-			listOLists.add(singleList);
-			//listOLists.add(singleList3);
-			//listOLists.addAll( orderRepo.getAllByorderId(oid));
-		
+
+
+			orderplaced.addAll(orderplaced1);
+
+
 		}
-		
-		
-		return listOLists;
-		
 
+		return orderplaced;
 	}
-	
-	/*List<Integer> singleList = new ArrayList<Integer>();
-	List<OrderPlaced> orderHistory = new ArrayList<OrderPlaced>();
-	
-public List<Integer> getAllOredrId(String username)
-{
-	
-	singleList=orderRepo.findByorderId1(username);
-	return singleList;
-	
-}
 
-public List<OrderPlaced> getAllOredrHistory(List<Integer> id)
-{
-	
-	orderHistory=orderRepo.getAllByorderId(id);
-	return orderHistory;
-	
-}
 
-@Override
-public List<List<OrderPlaced>> getUserDetails(String username) {
-	// TODO Auto-generated method stub
-	return null;
-}
-*/
-	@Override
-	public List<Map<Integer, ArrayList<OrderPlaced>>> getUsers(String username)
+
+	public List<OrderHistoryOfUser> getUserDetails()
 	{
-		
+		List<Integer> id=orderRepo.findDistinctByUsername(jaf.getUsername());
 
-		Map<Integer,ArrayList<OrderPlaced>> multiMap = new HashMap<>();
-		List<Integer> manualId=orderRepo.findByorderId1(username);
-		for(Integer oid:manualId)
+		OrderHistoryOfUser odhi=null;
+		List<OrderHistory> listofOrder= new ArrayList<>();
+		List<OrderHistoryOfUser> listofOrderHistory= null;
+		OrderHistory orderhistory = null;
+		List<OrderPlaced> od=null;
+		List<OrderDto> orderDto=null;
+		for(Integer i:id)
 		{
-			System.out.println(oid);
-			
-			int tot=orderRepo.totalPrice(oid);
-		Historyu h= new Historyu(oid,tot);
-	
-			multiMap.put(h.getoId(), orderRepo.getAllByorderId3(oid));
+			listofOrderHistory= new ArrayList<>();
+
+			orderhistory=new OrderHistory();
+			odhi= new OrderHistoryOfUser();
+			orderhistory.setOrderId(i);
+			od=orderRepo.findByOrderId(i);
+			orderDto=orderPlacedtoDto(od);
+			orderhistory.setOrderdto(orderDto);
+			int totalPrice=orderRepo.totalPrice(jaf.getUsername(),i);
+			orderhistory.setTotalPrice(totalPrice);
+			listofOrder.add(orderhistory);
+			/*odhi.setOrders(listofOrder);*/
+			listofOrderHistory.add(odhi);
+
 		}
-		List<Map<Integer, ArrayList<OrderPlaced>>>  list1= new ArrayList<>();
-		list1.add(multiMap);
-		return list1;
-		
+
+		List<OrderHistoryOfUser> it=iterate(listofOrder);
+		return it;
 	}
 
-	
+	public List<OrderDto> orderPlacedtoDto(List<OrderPlaced> op)
+	{
+		List<OrderDto> dtoList=new ArrayList<>();
+		OrderDto od=null;
+		for(OrderPlaced o:op)
+		{
+			od=new OrderDto();
+			od.setCategory(o.getCategory());
+			od.setDescription(o.getDescription());
+			od.setItemName(o.getItemName());
+			od.setOrderStatus(o.getOrderStatus());
+			od.setQuantity(o.getQuantity());
+			od.setPrice(o.getTotalPrice());
+			dtoList.add(od);
+		}
 
-}
+		return dtoList;
+	}
+	public List<OrderHistoryOfUser> iterate(List<OrderHistory> list)
+	{
+		OrderHistoryOfUser ou=null;
+		List<OrderHistoryOfUser> al=new ArrayList<>();
+
+		OrderHistory[] orders=null;
+
+		for(OrderHistory o:list)
+		{
+			orders=new OrderHistory[1];
+			ou=new OrderHistoryOfUser();
+
+			orders[0]=o;
+
+			ou.setOrders(orders);
+
+			al.add(ou);	
+		}
+
+
+		return al;
+	}}
+

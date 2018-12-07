@@ -1,6 +1,7 @@
 package com.infogain.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.boot.restaurant.api.dto.MenuDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.infogain.api.ExceptionHandler.ItemAlreadyExistsInMenuException;
+import com.infogain.api.ExceptionHandler.MenuItemNotFoundException;
+
 import com.infogain.api.entity.Menu;
 import com.infogain.api.repo.MenuRepository;
 import com.infogain.api.response.ResponseData;
 import com.infogain.api.service.IMenuService;
+
 
 
 
@@ -41,6 +46,9 @@ public class MenuController {
 	public ResponseData getMenu() {
 
 		List<MenuDto> menu = menuService.getAllMenu();
+		if(menu==null)
+			throw new MenuItemNotFoundException("Menu is Empty");
+		
 		return new ResponseData("200", "List of Menu", menu);
 		
 
@@ -52,8 +60,12 @@ public class MenuController {
 	@GetMapping(value = "/{id}")
 	public ResponseData findOne(@PathVariable(value = "id") int menuId) {
 
-		MenuDto menudto = menuService.findOneMenu(menuId);
-		return new ResponseData("200", "Following Menu Found", menudto);
+
+		Optional<Menu> x=menuRepository.findById(menuId);
+		if(!x.isPresent())
+		throw new MenuItemNotFoundException("Item with ID : "+menuId+" Not Found");
+		else
+		return new ResponseData("200", "Following Menu Found", x);
 
 	}
 
@@ -64,8 +76,13 @@ public class MenuController {
 	@CrossOrigin
     @PostMapping
 	public ResponseData addItemInMenu(@RequestBody MenuDto menuDto) {
-
+		String name= menuDto.getItemName();
+		Optional<Menu> obj=menuRepository.findByItemName(name);
+		if(obj.isPresent())
+			throw new ItemAlreadyExistsInMenuException("Item with name "+name+" Already exists");
 		menuDto = menuService.addItem(menuDto);
+		
+			
 		return new ResponseData("200", "Added successfuly", menuDto);
 
 	}
@@ -84,8 +101,12 @@ public class MenuController {
 	@CrossOrigin
 	@PutMapping(value="/{id}")
 	public ResponseData updateMenu(@PathVariable("id") int itemId,@RequestBody MenuDto menuDto)
-	{
+	{	Optional<Menu> menu = menuRepository.findById(itemId);
+	    if(!menu.isPresent())
+	    	throw new MenuItemNotFoundException("Item with Id : "+itemId+" not found");
+	    
 		MenuDto menuDto1=menuService.updateMenuURL(itemId, menuDto);
+	
 		return new ResponseData("200", "Added successfuly", menuDto1);
 		
 	}

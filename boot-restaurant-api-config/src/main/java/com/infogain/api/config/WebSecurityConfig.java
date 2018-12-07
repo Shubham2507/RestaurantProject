@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**" ,
                  Probably not needed "/swagger.json").permitAll()*/
 		
-				.antMatchers("/login", "/signup")
+				.antMatchers("/login", "/signup","/tablebooking","/feedback")
 				.permitAll().and().authorizeRequests().anyRequest().authenticated().and().exceptionHandling()
 				.authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

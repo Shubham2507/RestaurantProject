@@ -5,6 +5,7 @@ package com.infogain.api.service;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -68,8 +69,10 @@ public class MenuServiceImpl implements IMenuService {
 	@Override
 	public MenuDto addItem(MenuDto menuDto) {
 		Menu menu = new Menu();
+String mname= menuDto.getItemName();
 
 		menu.setItemName(menuDto.getItemName());
+		
 		menu.setDescription(menuDto.getDescription());
 		menu.setCategory(menuDto.getCategory());
 		menu.setQuantity(menuDto.getQuantity());

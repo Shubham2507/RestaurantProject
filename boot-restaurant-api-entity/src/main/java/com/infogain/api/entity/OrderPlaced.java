@@ -7,8 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "OrderPlaced")
+
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OrderPlaced {
 
 	@Id
@@ -45,6 +50,7 @@ public class OrderPlaced {
 
 	@Column(name = "Item_Description")
 	private String description;
+	
 	
 	@Column(name = "total_price")
 	private int totalPrice;

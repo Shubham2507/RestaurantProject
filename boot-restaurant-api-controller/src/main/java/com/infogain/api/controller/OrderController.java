@@ -1,6 +1,10 @@
 package com.infogain.api.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,7 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.infogain.api.ExceptionHandler.OrderedItemNotFoundException;
+import com.infogain.api.dto.OrderHistory;
+import com.infogain.api.dto.OrderHistoryOfUser;
 import com.infogain.api.entity.OrderPlaced;
+import com.infogain.api.repo.OrderRepository;
 import com.infogain.api.response.ResponseData;
 import com.infogain.api.service.IOrderService;
 
@@ -29,6 +37,8 @@ public class OrderController {
 
 	@Autowired
 	private IOrderService orderedService;
+	@Autowired
+	private OrderRepository orderRepository;
 	String msg = "Following Data Found";
 
 	@CrossOrigin
@@ -37,26 +47,20 @@ public class OrderController {
 	public ResponseData getAllOrder() {
 
 		List<OrderPlaced> order = orderedService.getAllOrder();
+		
 		return new ResponseData("200", msg, order);
 	}
-	
-/*
-	@CrossOrigin
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	@GetMapping("/users/{username}")
-	public ResponseData getAllUserDetails(@PathVariable("username") String username) {
 
-		List<OrderPlaced> orders = orderedService.getAllUsers(username);
-		return new ResponseData("200", msg, orders);
-	}*/
-	
 
 	@CrossOrigin
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	@GetMapping("/users/{username}")
-	public ResponseData getAllUserDetails(@PathVariable("username") String username) {
-
-		List<List<OrderPlaced>> orders = orderedService.getUserDetails(username);
+	@GetMapping("/orderHistory")
+	public ResponseData getAllUserDetails() {
+		
+		List<OrderHistoryOfUser>  orders = orderedService.getUserDetails();
+		if(orders==null)
+			throw new OrderedItemNotFoundException("No Order History Found");
+		else
 		return new ResponseData("200", msg, orders);
 	}
 	
@@ -73,7 +77,10 @@ public class OrderController {
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@PutMapping
 	public ResponseData updateOrderItem( @RequestBody OrderPlaced order) {
-
+		int oId=order.getId();
+        Optional<OrderPlaced> orders= orderRepository.findById(oId);
+        if(!orders.isPresent())
+        	throw new OrderedItemNotFoundException("Order with ID : "+oId+"Not found");
 		OrderPlaced orderUpdate=orderedService.updateOrder(order);
 
 		return new ResponseData("200", msg, orderUpdate);

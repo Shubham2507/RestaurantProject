@@ -3,6 +3,10 @@ package com.infogain.api.response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+
+@JsonSerialize
 public class ResponseData {
 	
 	private String code;

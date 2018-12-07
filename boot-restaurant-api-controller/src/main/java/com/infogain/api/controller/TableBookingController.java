@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import com.infogain.api.ExceptionHandler.TableEntriesNullException;
 import com.infogain.api.entity.TableBooking;
 import com.infogain.api.response.ResponseData;
 import com.infogain.api.service.ITableBookingService;
 
 @RestController("tableBookingController")
-@RequestMapping("/poc/tablebooking")
+@RequestMapping("/tablebooking")
 @EnableWebMvc
 public class TableBookingController {
 	
@@ -28,7 +30,7 @@ public class TableBookingController {
 	
 	String msg = "Following Data Found";
 	@CrossOrigin
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	
 	@GetMapping
 	
 	public ResponseData getBookedTables()
@@ -38,18 +40,21 @@ public class TableBookingController {
 		
 	}
 	@CrossOrigin
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+
 	@PostMapping()
 	
 	public ResponseData addBookedTable(@RequestBody TableBooking table) 
 	{
+		if(table.getBookingDate()==null||table.getMobileNo()==0 || table.getNoOfGuests()==0 || table.getTime()==null|| table.getUsername()==null)
+		{
+			throw new TableEntriesNullException("Enter details properly!!");
+		}
 		String table1=tableBookService.bookTable(table);
-
-		return new ResponseData("200",msg,table1);
 		
+		return new ResponseData("200",msg,table1);
 	}
 	@CrossOrigin
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+
 	@DeleteMapping(value="/{id}")
 	public String deleteOneTableBooked(@PathVariable("id") int tableId) {
 
@@ -58,7 +63,7 @@ public class TableBookingController {
 		return "Deletion Successful of tableId = "+tableId;		
 	}
 	@CrossOrigin
-	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+
 	@PutMapping
 	public ResponseData updateBookedTable( @RequestBody TableBooking table) {
 
