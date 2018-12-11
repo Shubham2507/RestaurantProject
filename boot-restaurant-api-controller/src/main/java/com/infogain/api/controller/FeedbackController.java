@@ -37,7 +37,7 @@ public class FeedbackController {
 			List<Feedback> feedback = fImpl.getAllFeedback();
 			
 			
-			return new ResponseData("200", "List of Menu", feedback);
+			return new ResponseData("200", "List of Feedback", feedback);
 			
 
 		}

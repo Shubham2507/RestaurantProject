@@ -72,8 +72,8 @@ public class TableBookingServiceImplTest {
 		TableBooking table=new TableBooking();
 		//tableBooking.add(new TableBooking(12,"10-11-2018","10:00",2,2,"10-11-2018 10:00","vishu",900809978,1));
 		//tableBooking.add(new TableBooking(14,"14-11-2018","11:00",2,2,"14-11-2018 11:00","vishu",900809978,1));
-		//tableBookingService.updateTableBooking(table);
-		//tableBookingRepo.getOne(12);
+		tableBookingService.updateTableBooking(table);
+		tableBookingRepo.getOne(12);
 		table.setBookingDate("12-11-2018");
 
 		table.setMobileNo(98099336);
